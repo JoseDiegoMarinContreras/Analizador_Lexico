@@ -88,6 +88,7 @@ public class Interfaz extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -186,6 +187,21 @@ public class Interfaz extends javax.swing.JFrame {
         );
 
         jMenu1.setText("File");
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1ActionPerformed(evt);
+            }
+        });
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Guardar");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -263,29 +279,22 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-        JFileChooser fc = new JFileChooser();
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.TXT", "txt");
-        fc.setFileFilter(filtro);
-        int r = fc.showSaveDialog(this);
-        if(r == JFileChooser.APPROVE_OPTION){
-            try{
-                String ar[] = areaCodigo.getText().split("\n");
-                FileWriter f = new FileWriter(fc.getSelectedFile().getPath()+".txt");
-                BufferedWriter bf = new BufferedWriter(f);
-                for(int i = 0; i < ar.length; i++){
-                    bf.write(ar[i]);
-                    bf.newLine();
-                }
-                bf.flush();
-                bf.close();
-                f.close();
-            } catch(IOException e){
-                e.printStackTrace();
-                }
-        }
+        guardar();
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+        compilar();
+    }//GEN-LAST:event_jButton4MouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+        guardar();
+    }//GEN-LAST:event_jMenu1ActionPerformed
+
+    public void compilar(){
         String texto = areaCodigo.getText();
         Simbolo simbolo = new Simbolo();
         String nombre = "";
@@ -377,12 +386,31 @@ public class Interfaz extends javax.swing.JFrame {
             }
         }
         AreaComponentesL.setText(cad);
-    }//GEN-LAST:event_jButton4MouseClicked
-
-    public void sobreIc(JLabel ic){
-        ic.setBackground(Color.red);
-        ic.setOpaque(true);
     }
+    
+    public void guardar(){
+        JFileChooser fc = new JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.TXT", "txt");
+        fc.setFileFilter(filtro);
+        int r = fc.showSaveDialog(this);
+        if(r == JFileChooser.APPROVE_OPTION){
+            try{
+                String ar[] = areaCodigo.getText().split("\n");
+                FileWriter f = new FileWriter(fc.getSelectedFile().getPath()+".txt");
+                BufferedWriter bf = new BufferedWriter(f);
+                for(int i = 0; i < ar.length; i++){
+                    bf.write(ar[i]);
+                    bf.newLine();
+                }
+                bf.flush();
+                bf.close();
+                f.close();
+            } catch(IOException e){
+                e.printStackTrace();
+                }
+        }    
+    }
+    
     String cad = "";
     /**
      * @param args the command line arguments
@@ -430,6 +458,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
