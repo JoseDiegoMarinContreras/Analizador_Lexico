@@ -40,7 +40,9 @@ public class Interfaz extends javax.swing.JFrame {
      */
     public Interfaz() {
         initComponents();
-        tablaSimbolos = new Hashtable<>();
+        abrir.setToolTipText("Abrir");
+        guardar.setToolTipText("Guardar");
+        compilar.setToolTipText("Compilar");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 //        areaCodigo.setPreferredSize(new Dimension(this.getSize().width, this.getSize().height/2));
         areaCodigo.addCaretListener(new CaretListener(){
@@ -83,9 +85,9 @@ public class Interfaz extends javax.swing.JFrame {
         numFilas = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         numCol = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        abrir = new javax.swing.JButton();
+        guardar = new javax.swing.JButton();
+        compilar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -116,24 +118,24 @@ public class Interfaz extends javax.swing.JFrame {
 
         jLabel1.setText("Col:");
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/folderopened-amarillo-icono-6397-32.png"))); // NOI18N
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        abrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/folderopened-amarillo-icono-6397-32.png"))); // NOI18N
+        abrir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+                abrirMouseClicked(evt);
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/disquetes-excepto-icono-3849-32.png"))); // NOI18N
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+        guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/disquetes-excepto-icono-3849-32.png"))); // NOI18N
+        guardar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
+                guardarMouseClicked(evt);
             }
         });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/clicknrun-icono-4776-32.png"))); // NOI18N
-        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+        compilar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/clicknrun-icono-4776-32.png"))); // NOI18N
+        compilar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton4MouseClicked(evt);
+                compilarMouseClicked(evt);
             }
         });
 
@@ -157,11 +159,11 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelPrincipalLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(abrir, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(compilar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -169,9 +171,9 @@ public class Interfaz extends javax.swing.JFrame {
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPrincipalLayout.createSequentialGroup()
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(abrir)
+                    .addComponent(guardar)
+                    .addComponent(compilar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -253,7 +255,7 @@ public class Interfaz extends javax.swing.JFrame {
 //        }
     }//GEN-LAST:event_areaCodigoKeyTyped
 
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+    private void abrirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMouseClicked
         JFileChooser fc = new JFileChooser();
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.TXT", "txt");
         fc.setFileFilter(filtro);
@@ -276,18 +278,18 @@ public class Interfaz extends javax.swing.JFrame {
                 }
         }
         
-    }//GEN-LAST:event_jButton2MouseClicked
+    }//GEN-LAST:event_abrirMouseClicked
 
-    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+    private void guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarMouseClicked
         guardar();
-    }//GEN-LAST:event_jButton3MouseClicked
+    }//GEN-LAST:event_guardarMouseClicked
 
-    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+    private void compilarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compilarMouseClicked
         compilar();
-    }//GEN-LAST:event_jButton4MouseClicked
+    }//GEN-LAST:event_compilarMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-
+        guardar();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
@@ -295,6 +297,7 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     public void compilar(){
+        tablaSimbolos = new Hashtable<>();
         String texto = areaCodigo.getText();
         Simbolo simbolo = new Simbolo();
         String nombre = "";
@@ -347,14 +350,15 @@ public class Interfaz extends javax.swing.JFrame {
             if(tokenTipo7 != null){
                 cad+="Signo de Puntuación: "+tokenTipo7+"\n";
                 if (tokenTipo7.equals(";")) {
-                    if (!tablaSimbolos.contains(tokenTipo7)) {
+                    if (!tablaSimbolos.containsKey(nombre)) {
+                        System.out.println(nombre);
                         tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));            
                         System.out.println("Nombre: "+nombre
                                    +"\nTipo: "+simbolo.tipo
                                    +"\nValor: "+simbolo.valor
                                    +"\nFila: "+linea);
                     }else{
-                        javax.swing.JOptionPane.showMessageDialog(this,"El id ya existe");
+                        javax.swing.JOptionPane.showMessageDialog(this,"El id "+nombre+" ya existe");
                     }
                 }
             }
@@ -449,10 +453,10 @@ public class Interfaz extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AreaComponentesL;
+    private javax.swing.JButton abrir;
     private javax.swing.JTextArea areaCodigo;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton compilar;
+    private javax.swing.JButton guardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
