@@ -9,13 +9,15 @@
  * @author abv17
  */
 public class Simbolo {
-    protected Object nombre;
     protected Object tipo;
     protected Object valor;
-    protected Object fila;
-    Simbolo(Object nom, Object tip, Object val){
-        nombre=nom;
+    protected int fila;
+    Simbolo(Object tip, Object val, int fil){
         tipo=tip;
         valor=val;
+        fila=fil;
+    }
+    Simbolo(){
+        
     }
 }

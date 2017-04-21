@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.Hashtable;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
@@ -18,6 +19,7 @@ import java.util.regex.Pattern;
  * @author abv17
  */
 public class Interfaz extends javax.swing.JFrame {
+    Hashtable<String, Simbolo> tablaSimbolos;
     String[] palRes={"start","end","natural","integer","real","function","table","text","bit","infinity","main",
                      "pi","euler","if","else","during","from","to","do","terminal","expression","thread","convertion"};
     int fila;
@@ -27,6 +29,7 @@ public class Interfaz extends javax.swing.JFrame {
      */
     public Interfaz() {
         initComponents();
+        tablaSimbolos = new Hashtable<>();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 //        areaCodigo.setPreferredSize(new Dimension(this.getSize().width, this.getSize().height/2));
         areaCodigo.addCaretListener(new CaretListener(){
@@ -178,6 +181,7 @@ public class Interfaz extends javax.swing.JFrame {
             + "([#])|"
             +"([0-9]+)|"
             + "([a-zA-Z_0-9]+)");
+    String[] tipoDato= {"natural","integer","real","text","bit"};
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         // TODO add your handling code here:
         Dimension dim = this.getContentPane().getSize();
@@ -186,29 +190,36 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void areaCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_areaCodigoKeyTyped
         // TODO add your handling code here:
-        cad+=evt.getKeyChar();
-        for (int i = 0; i < palRes.length; i++) {
-            if (cad.equals(palRes[i]+" ")) {
-                areaCodigo.setForeground(Color.red);
-                System.out.println(cad);
-                cad="";
-            }
-        }
+//        cad+=evt.getKeyChar();
+//        for (int i = 0; i < palRes.length; i++) {
+//            if (cad.equals(palRes[i]+" ")) {
+//                areaCodigo.setForeground(Color.red);
+//                //System.out.println(cad);
+//                cad="";
+//            }
+//        }
     }//GEN-LAST:event_areaCodigoKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String texto = areaCodigo.getText();
-
+        Simbolo simbolo = new Simbolo();
+        String nombre = "";
+        int linea=0;
         Pattern p = Pattern.compile(patron);
         Matcher matcher = p.matcher(texto);
-
+        boolean bandera= false;
         String cad = "";
 
         while (matcher.find()){
             String tokenTipo1 = matcher.group(1);
             if(tokenTipo1 != null){
                 cad+="Palabra Reservada: "+tokenTipo1+"\n";
+                for(String tipo:tipoDato){
+                    if (tokenTipo1.equals(tipo)) {
+                        simbolo.tipo=tokenTipo1;
+                    }
+                }
             }
 
             String tokenTipo2 = matcher.group(2);
@@ -219,6 +230,9 @@ public class Interfaz extends javax.swing.JFrame {
             String tokenTipo3 = matcher.group(3);
             if(tokenTipo3 != null){
                 cad+="Operador de Asignación: "+tokenTipo3+"\n";
+                if (!bandera) {
+                    bandera=true;
+                }
             }
 
             String tokenTipo4 = matcher.group(4);
@@ -239,6 +253,17 @@ public class Interfaz extends javax.swing.JFrame {
             String tokenTipo7 = matcher.group(7);
             if(tokenTipo7 != null){
                 cad+="Signo de Puntuación: "+tokenTipo7+"\n";
+                if (tokenTipo7.equals(";")) {
+                    if (!tablaSimbolos.contains(tokenTipo7)) {
+                        tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));            
+                        System.out.println("Nombre: "+nombre
+                                   +"\nTipo: "+simbolo.tipo
+                                   +"\nValor: "+simbolo.valor
+                                   +"\nFila: "+linea);
+                    }else{
+                        javax.swing.JOptionPane.showMessageDialog(this,"El id ya existe");
+                    }
+                }
             }
 
             String tokenTipo8 = matcher.group(8);
@@ -249,11 +274,22 @@ public class Interfaz extends javax.swing.JFrame {
             String tokenTipo9 = matcher.group(9);
             if(tokenTipo9 != null){
                 cad+="Número: "+tokenTipo9+"\n";
+                if (bandera) {
+                    simbolo.valor=tokenTipo9;
+                    bandera=false;
+                }
             }
 
             String tokenTipo10 = matcher.group(10);
             if(tokenTipo10 != null){
                 cad+="Identificador: "+tokenTipo10+"\n";
+                if (!bandera) {
+                    nombre= tokenTipo10;
+                    linea= fila;
+                }else{
+                    simbolo.valor= tokenTipo10;
+                    bandera=false;
+                }
             }
         }
         AreaComponentesL.setText(cad);
