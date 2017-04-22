@@ -18,8 +18,10 @@ public class Errores {
         ec = new ArrayList<String>();
     }
     
-    public void error(String index){
-        ec.add((String)msjerr.get("T")+(String)msjerr.get(index));
+    public void errorL(String index, String nl, String p){
+        String e = ((String)msjerr.get(index)).replaceAll("%s", p);
+        String el = ((String)msjerr.get("T")).replaceAll("%s", nl);
+        ec.add(el+e);
     }
     
     public String[] obtenerErrores(){
