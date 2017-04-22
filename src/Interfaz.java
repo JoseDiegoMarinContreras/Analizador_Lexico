@@ -155,6 +155,11 @@ public class Interfaz extends javax.swing.JFrame {
                 jButton1MouseClicked(evt);
             }
         });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
@@ -276,16 +281,18 @@ public class Interfaz extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    char comillas = 34;
     String patron = ("(start|end|natural|integer|real|function|table|text|bit|infinity|pi|euler|if|else|during|from|to|do|terminal|expression|thread|main|convertion)|"
-            + "([-|/|^|+|*])|"
-            + "(=)|"
-            + "([<|>|::|<=|>=]+)|"
+            + "([:][:]|<=|>=|<|>|[=][?])|"
+            + "([-][=]|[+][=]|[/][=]|[*][=]|[=])|"
+            + "([a-zA-Z]+[a-zA-Z_0-9]*|["+comillas+"][[\\s]*[\\w]+[\\s]*]+["+comillas+"])|"
+            + "([#]|["+comillas+"]|[*][*]|[{]|[}])|"
             + "(AND|OR)|"
-            + "([(|)])|"
-            + "([.|,|;])|"
-            + "([#])|"
-            +"([0-9]+)|"
-            + "([a-zA-Z_0-9]+)");
+            + "([(]|[)])|"
+            + "([-|/|^|+|*])|"
+            +"([\\d]+[.][\\d]+|\\d+)|"
+            + "([.|,|;])");
+    String[] preservadas= {"start","end","natural","integer","real","function","table","text","bit","infinity","pi","euler","if","else","during","from","to","do","terminal","expression","thread","main","convertion"};
     String[] tipoDato= {"natural","integer","real","text","bit"};
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         // TODO add your handling code here:
@@ -352,6 +359,10 @@ public class Interfaz extends javax.swing.JFrame {
         areaCodigo.setText(areaCodigo.getText().replaceAll(cb,nc));
     }//GEN-LAST:event_miBRActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public void compilar(){
         tablaSimbolos = new Hashtable<>();
         String texto = areaCodigo.getText();
@@ -376,36 +387,62 @@ public class Interfaz extends javax.swing.JFrame {
 
             String tokenTipo2 = matcher.group(2);
             if(tokenTipo2 != null){
-                cad+="Operador Aritmetico: "+tokenTipo2+"\n";
+                cad+="Operador Relacional: "+tokenTipo2+"\n";
             }
 
-            String tokenTipo3 = matcher.group(3);
+           String tokenTipo3 = matcher.group(3);
             if(tokenTipo3 != null){
                 cad+="Operador de Asignación: "+tokenTipo3+"\n";
                 if (!bandera) {
                     bandera=true;
                 }
             }
-
+            
             String tokenTipo4 = matcher.group(4);
             if(tokenTipo4 != null){
-                cad+="Operador Relacional: "+tokenTipo4+"\n";
+                cad+="Identificador: "+tokenTipo4+"\n";
+                if (!bandera) {
+                    nombre= tokenTipo4;
+                    linea= fila;
+                }else{
+                    simbolo.valor= tokenTipo4;
+                    bandera=false;
+                }
             }
-
+            
             String tokenTipo5 = matcher.group(5);
             if(tokenTipo5 != null){
-                cad+="Operador Lógico: "+tokenTipo5+"\n";
+                cad+="Función Especial: "+tokenTipo5+"\n";
             }
-
+            
             String tokenTipo6 = matcher.group(6);
             if(tokenTipo6 != null){
-                cad+="Signo de Agrupación: "+tokenTipo6+"\n";
+                cad+="Operador Lógico: "+tokenTipo6+"\n";
             }
 
             String tokenTipo7 = matcher.group(7);
             if(tokenTipo7 != null){
-                cad+="Signo de Puntuación: "+tokenTipo7+"\n";
-                if (tokenTipo7.equals(";")) {
+                cad+="Signo de Agrupación: "+tokenTipo7+"\n";
+            }
+
+            String tokenTipo8 = matcher.group(8);
+            if(tokenTipo8 != null){
+                cad+="Operador Aritmetico: "+tokenTipo8+"\n";
+            }
+            
+            String tokenTipo9 = matcher.group(9);
+            if(tokenTipo9 != null){
+                cad+="Número: "+tokenTipo9+"\n";
+                if (bandera) {
+                    simbolo.valor=tokenTipo9;
+                    bandera=false;
+                }
+            }
+                        
+            String tokenTipo10 = matcher.group(10);
+            if(tokenTipo10 != null){
+                cad+="Signo de Puntuación: "+tokenTipo10+"\n";
+                if (tokenTipo10.equals(";")) {
                     if (!tablaSimbolos.containsKey(nombre)) {
                         System.out.println(nombre);
                         tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));            
@@ -418,32 +455,9 @@ public class Interfaz extends javax.swing.JFrame {
                     }
                 }
             }
+            
 
-            String tokenTipo8 = matcher.group(8);
-            if(tokenTipo8 != null){
-                cad+="Función Especial: "+tokenTipo8+"\n";
-            }
 
-            String tokenTipo9 = matcher.group(9);
-            if(tokenTipo9 != null){
-                cad+="Número: "+tokenTipo9+"\n";
-                if (bandera) {
-                    simbolo.valor=tokenTipo9;
-                    bandera=false;
-                }
-            }
-
-            String tokenTipo10 = matcher.group(10);
-            if(tokenTipo10 != null){
-                cad+="Identificador: "+tokenTipo10+"\n";
-                if (!bandera) {
-                    nombre= tokenTipo10;
-                    linea= fila;
-                }else{
-                    simbolo.valor= tokenTipo10;
-                    bandera=false;
-                }
-            }
         }
         AreaComponentesL.setText(cad);
     }
