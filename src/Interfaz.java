@@ -281,18 +281,16 @@ public class Interfaz extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    char comillas = 34;
-    String patron = ("(start|end|natural|integer|real|function|table|text|bit|infinity|pi|euler|if|else|during|from|to|do|terminal|expression|thread|main|convertion)|"
+    String patron = ("(start\\b|end\\b|natural\\b|integer\\b|real\\b|function\\b|table\\b|text\\b|bit\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b)|"
             + "([:][:]|<=|>=|<|>|[=][?])|"
             + "([-][=]|[+][=]|[/][=]|[*][=]|[=])|"
-            + "([a-zA-Z]+[a-zA-Z_0-9]*|["+comillas+"][[\\s]*[\\w]+[\\s]*]+["+comillas+"])|"
-            + "([#]|["+comillas+"]|[*][*]|[{]|[}])|"
+            + "([a-zA-Z]+[a-zA-Z_0-9]*|[\\x22][[\\s]*[\\w]+[\\s]*]+[\\x22])|"
+            + "([#]|[\\x22]|[*][*]|[{]|[}])|"
             + "(AND|OR)|"
-            + "([(]|[)])|"
+            + "(\\x28|\\x29|\\x5B|\\x5D)|"
             + "([-|/|^|+|*])|"
             +"([\\d]+[.][\\d]+|\\d+)|"
             + "([.|,|;])");
-    String[] preservadas= {"start","end","natural","integer","real","function","table","text","bit","infinity","pi","euler","if","else","during","from","to","do","terminal","expression","thread","main","convertion"};
     String[] tipoDato= {"natural","integer","real","text","bit"};
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         // TODO add your handling code here:
