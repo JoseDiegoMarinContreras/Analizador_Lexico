@@ -96,9 +96,12 @@ public class VentanaBuscar extends javax.swing.JDialog {
             showMessageDialog(this,"No existen coincidencias");
             return;
         }
+        if(index == c.getText().length()-pb.length()+1 && indexr >= 0){
+            index = indexr;
+            indexr = -1;        
+        }
         for(int i = (index+1);i <= (c.getText().length()-pb.length()) ;i++){
             index = i;
-            showMessageDialog(this,"Nll");
             if(c.getText().substring(i, i+pb.length()).equals(pb)){
                 c.setSelectionStart(i);
                 c.setSelectionEnd(i+pb.length());
@@ -106,6 +109,7 @@ public class VentanaBuscar extends javax.swing.JDialog {
                 return;
             }
         }
+        indexr = index;
         index = -1;
         showMessageDialog(this,"No existen mas coincidencias");
     }//GEN-LAST:event_btnSigMouseClicked
@@ -116,8 +120,11 @@ public class VentanaBuscar extends javax.swing.JDialog {
             showMessageDialog(this,"No existen coincidencias");
             return;
         }
-        if(index < 0){
+        if(index < 0 && indexr == -1){
             index = c.getText().length()-pb.length()+1;
+        }else if(index < 0 && indexr >= 0){
+            index = indexr;
+            indexr = -1;        
         }
         for(int i = (index-1);i >= 0;i--){
             index = i;
@@ -128,6 +135,7 @@ public class VentanaBuscar extends javax.swing.JDialog {
                 return;
             }
         }
+        indexr = index;
         index = c.getText().length()-pb.length()+1;
         showMessageDialog(this,"No existen mas coincidencias");
     }//GEN-LAST:event_btnAntMouseClicked
