@@ -288,8 +288,8 @@ public class Interfaz extends javax.swing.JFrame {
             + "([#]|[\\x22]|[*][*]|[{]|[}])|"
             + "(AND|OR)|"
             + "(\\x28|\\x29|\\x5B|\\x5D)|"
+            +"([\\x2B|\\x2D]{0,1}[\\d]+[.][\\d]+|\\d+|[\\x2B|\\x2D]{0,1}[\\x2E]{0,1}[\\d]+)|"
             + "([-|/|^|+|*])|"
-            +"([\\d]+[.][\\d]+|\\d+)|"
             + "([.|,|;])");
     String[] tipoDato= {"natural","integer","real","text","bit"};
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
@@ -422,21 +422,21 @@ public class Interfaz extends javax.swing.JFrame {
             if(tokenTipo7 != null){
                 cad+="Signo de Agrupación: "+tokenTipo7+"\n";
             }
-
+            
             String tokenTipo8 = matcher.group(8);
             if(tokenTipo8 != null){
-                cad+="Operador Aritmetico: "+tokenTipo8+"\n";
+                cad+="Número: "+tokenTipo8+"\n";
+                if (bandera) {
+                    simbolo.valor=tokenTipo8;
+                    bandera=false;
+                }
             }
             
             String tokenTipo9 = matcher.group(9);
             if(tokenTipo9 != null){
-                cad+="Número: "+tokenTipo9+"\n";
-                if (bandera) {
-                    simbolo.valor=tokenTipo9;
-                    bandera=false;
-                }
+                cad+="Operador Aritmetico: "+tokenTipo9+"\n";
             }
-                        
+            
             String tokenTipo10 = matcher.group(10);
             if(tokenTipo10 != null){
                 cad+="Signo de Puntuación: "+tokenTipo10+"\n";
