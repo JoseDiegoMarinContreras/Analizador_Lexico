@@ -442,7 +442,6 @@ public class Interfaz extends javax.swing.JFrame {
                 cad+="Signo de Puntuación: "+tokenTipo10+"\n";
                 if (tokenTipo10.equals(";")) {
                     if (!tablaSimbolos.containsKey(nombre)) {
-                        System.out.println(nombre);
                         tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));            
                         System.out.println("Nombre: "+nombre
                                    +"\nTipo: "+simbolo.tipo
