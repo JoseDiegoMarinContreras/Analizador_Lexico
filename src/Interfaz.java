@@ -282,15 +282,17 @@ public class Interfaz extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     String patron = ("(start\\b|end\\b|natural\\b|integer\\b|real\\b|function\\b|table\\b|text\\b|bit\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b)|"
-            + "([:][:]|<=|>=|<|>|[=][?])|"
-            + "([-][=]|[+][=]|[/][=]|[*][=]|[=])|"
-            + "([a-zA-Z]+[a-zA-Z_0-9]*|[\\x22][[\\s]*[\\w]+[\\s]*]+[\\x22])|"
-            + "([#]|[\\x22]|[*][*]|[{]|[}])|"
-            + "(AND|OR)|"
-            + "(\\x28|\\x29|\\x5B|\\x5D)|"
-            +"([\\x2B|\\x2D]{0,1}[\\d]+[.][\\d]+|\\d+|[\\x2B|\\x2D]{0,1}[\\x2E]{0,1}[\\d]+)|"
-            + "([-|/|^|+|*])|"
-            + "([.|,|;])");
+            + "([:][:]|<=|>=|<|>|[=][?])|" //operador relacional
+            + "([-][=]|[+][=]|[/][=]|[*][=]|[=])|" //operador de asignacion
+            + "([a-zA-Z]+[a-zA-Z_0-9]*)|" //identificador
+            + "([\\x22][[\\s]*[\\w]+[\\s]*]+[\\x22])|" //Cadenas
+            + "([\\x22][\\x22])|" //Cadena Vacia
+            + "([#]|[\\x22]|[*][*]|[{]|[}])|" //signos especiales
+            + "(AND|OR)|" //operador logico
+            + "(\\x28|\\x29|\\x5B|\\x5D)|"//signos de agrupacion
+            +"([\\x2B|\\x2D]{0,1}[\\d]+[.][\\d]+|\\d+|[\\x2B|\\x2D]{0,1}[\\x2E]{0,1}[\\d]+)|"//numero
+            + "([-|/|^|+|*])|"//operador aritmetico
+            + "([.|,|;])");//signos de puntuacion
     String[] tipoDato= {"natural","integer","real","text","bit"};
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         // TODO add your handling code here:
@@ -399,48 +401,55 @@ public class Interfaz extends javax.swing.JFrame {
             String tokenTipo4 = matcher.group(4);
             if(tokenTipo4 != null){
                 cad+="Identificador: "+tokenTipo4+"\n";
-                if (!bandera) {
-                    nombre= tokenTipo4;
-                    linea= fila;
-                }else{
-                    simbolo.valor= tokenTipo4;
-                    bandera=false;
-                }
+                nombre= tokenTipo4;
+                linea= fila;
             }
             
             String tokenTipo5 = matcher.group(5);
             if(tokenTipo5 != null){
-                cad+="Función Especial: "+tokenTipo5+"\n";
+                cad+="Cadena: "+tokenTipo5+"\n";
+                simbolo.valor= tokenTipo5;
             }
             
             String tokenTipo6 = matcher.group(6);
             if(tokenTipo6 != null){
-                cad+="Operador Lógico: "+tokenTipo6+"\n";
+                cad+="Cadena Vacia: "+tokenTipo6+"\n";
+                simbolo.valor= tokenTipo6;
             }
-
+            
             String tokenTipo7 = matcher.group(7);
             if(tokenTipo7 != null){
-                cad+="Signo de Agrupación: "+tokenTipo7+"\n";
+                cad+="Función Especial: "+tokenTipo7+"\n";
             }
             
             String tokenTipo8 = matcher.group(8);
             if(tokenTipo8 != null){
-                cad+="Número: "+tokenTipo8+"\n";
-                if (bandera) {
-                    simbolo.valor=tokenTipo8;
-                    bandera=false;
-                }
+                cad+="Operador Lógico: "+tokenTipo8+"\n";
             }
-            
+
             String tokenTipo9 = matcher.group(9);
             if(tokenTipo9 != null){
-                cad+="Operador Aritmetico: "+tokenTipo9+"\n";
+                cad+="Signo de Agrupación: "+tokenTipo9+"\n";
             }
             
             String tokenTipo10 = matcher.group(10);
             if(tokenTipo10 != null){
-                cad+="Signo de Puntuación: "+tokenTipo10+"\n";
-                if (tokenTipo10.equals(";")) {
+                cad+="Número: "+tokenTipo10+"\n";
+                if (bandera) {
+                    simbolo.valor=tokenTipo10;
+                    bandera=false;
+                }
+            }
+            
+            String tokenTipo11 = matcher.group(11);
+            if(tokenTipo11 != null){
+                cad+="Operador Aritmetico: "+tokenTipo11+"\n";
+            }
+            
+            String tokenTipo12 = matcher.group(12);
+            if(tokenTipo12 != null){
+                cad+="Signo de Puntuación: "+tokenTipo12+"\n";
+                if (tokenTipo12.equals(";")) {
                     if (!tablaSimbolos.containsKey(nombre)) {
                         tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));            
                         System.out.println("Nombre: "+nombre
