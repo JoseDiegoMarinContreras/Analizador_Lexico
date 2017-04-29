@@ -83,7 +83,7 @@ public class Interfaz extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         areaCodigo = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        AreaComponentesL = new javax.swing.JTextArea();
+        AreaErrores = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         numFilas = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -92,6 +92,8 @@ public class Interfaz extends javax.swing.JFrame {
         guardar = new javax.swing.JButton();
         compilar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        AreaComponentesL = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -119,10 +121,10 @@ public class Interfaz extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(areaCodigo);
 
-        AreaComponentesL.setEditable(false);
-        AreaComponentesL.setColumns(20);
-        AreaComponentesL.setRows(5);
-        jScrollPane2.setViewportView(AreaComponentesL);
+        AreaErrores.setEditable(false);
+        AreaErrores.setColumns(20);
+        AreaErrores.setRows(5);
+        jScrollPane2.setViewportView(AreaErrores);
 
         jLabel2.setText("Fila:");
 
@@ -161,28 +163,37 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
+        AreaComponentesL.setColumns(20);
+        AreaComponentesL.setRows(5);
+        jScrollPane3.setViewportView(AreaComponentesL);
+
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPrincipalLayout.createSequentialGroup()
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelPrincipalLayout.createSequentialGroup()
-                        .addGap(112, 447, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(numFilas, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1)
-                        .addGap(25, 25, 25)
-                        .addComponent(numCol, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(119, 119, 119))
                     .addComponent(jScrollPane2)
-                    .addGroup(panelPrincipalLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelPrincipalLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelPrincipalLayout.createSequentialGroup()
+                        .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelPrincipalLayout.createSequentialGroup()
+                                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelPrincipalLayout.createSequentialGroup()
+                                        .addGap(112, 441, Short.MAX_VALUE)
+                                        .addComponent(jLabel2)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(panelPrincipalLayout.createSequentialGroup()
+                                        .addComponent(numFilas, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel1)
+                                        .addGap(25, 25, 25)
+                                        .addComponent(numCol, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(119, 119, 119))
+                                    .addComponent(jScrollPane3)))
+                            .addGroup(panelPrincipalLayout.createSequentialGroup()
                                 .addComponent(abrir, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -202,7 +213,9 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(compilar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
+                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -281,12 +294,17 @@ public class Interfaz extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    String Alfabeto=("[\\w]*[\\x09]*[\\x20]*[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x23]*[\\x3F]*[\\x23]*[\\x22]*[\\x2E]*[\\x20]+");
+    String Alfabeto2=("[\\w]*[\\x09]*[\\x20]*[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x3F]*[\\xF9]*[\\x2E]*[\\x20]+");
     String patron = ("(start\\b|end\\b|natural\\b|integer\\b|real\\b|function\\b|table\\b|text\\b|bit\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b)|"
             + "([:][:]|<=|>=|<|>|[=][?])|" //operador relacional
             + "([-][=]|[+][=]|[/][=]|[*][=]|[=])|" //operador de asignacion
             + "([a-zA-Z]+[a-zA-Z_0-9]*)|" //identificador
-            + "([\\x22][[\\s]*[\\w]+[\\s]*]+[\\x22])|" //Cadenas
+            + "([\\x22]["+Alfabeto2+"]*[\\x22][#]["+Alfabeto2+"]+[#][\\x22]["+Alfabeto2+"]+[\\x22]|[\\x22]["+Alfabeto2+"]*[\\x22][#]["+Alfabeto2+"]+)|" //Concatenacion
             + "([\\x22][\\x22])|" //Cadena Vacia
+            + "([*][*]["+Alfabeto+"]+)|" //Comentario Simple
+            + "([{][["+Alfabeto+"]+[\\x0A]*]+[}])|" //Comentario Largo
+            + "([\\x22]["+Alfabeto+"]+[\\x22])|" //Cadenas
             + "([#]|[\\x22]|[*][*]|[{]|[}])|" //signos especiales
             + "(AND|OR)|" //operador logico
             + "(\\x28|\\x29|\\x5B|\\x5D)|"//signos de agrupacion
@@ -377,7 +395,7 @@ public class Interfaz extends javax.swing.JFrame {
         while (matcher.find()){
             String tokenTipo1 = matcher.group(1);
             if(tokenTipo1 != null){
-                cad+="Palabra Reservada: "+tokenTipo1+"\n";
+                cad+="<Palabra Reservada, "+tokenTipo1+">\n";
                 for(String tipo:tipoDato){
                     if (tokenTipo1.equals(tipo)) {
                         simbolo.tipo=tokenTipo1;
@@ -387,12 +405,12 @@ public class Interfaz extends javax.swing.JFrame {
 
             String tokenTipo2 = matcher.group(2);
             if(tokenTipo2 != null){
-                cad+="Operador Relacional: "+tokenTipo2+"\n";
+                cad+="<Operador Relacional, "+tokenTipo2+">\n";
             }
 
            String tokenTipo3 = matcher.group(3);
             if(tokenTipo3 != null){
-                cad+="Operador de Asignación: "+tokenTipo3+"\n";
+                cad+="<Operador de Asignación, "+tokenTipo3+">\n";
                 if (!bandera) {
                     bandera=true;
                 }
@@ -400,56 +418,71 @@ public class Interfaz extends javax.swing.JFrame {
             
             String tokenTipo4 = matcher.group(4);
             if(tokenTipo4 != null){
-                cad+="Identificador: "+tokenTipo4+"\n";
+                cad+="<Identificador, "+tokenTipo4+">\n";
                 nombre= tokenTipo4;
                 linea= fila;
             }
             
             String tokenTipo5 = matcher.group(5);
             if(tokenTipo5 != null){
-                cad+="Cadena: "+tokenTipo5+"\n";
-                simbolo.valor= tokenTipo5;
+                cad+="<Concatenación, "+tokenTipo5+">\n";
             }
             
             String tokenTipo6 = matcher.group(6);
             if(tokenTipo6 != null){
-                cad+="Cadena Vacia: "+tokenTipo6+"\n";
+                cad+="<Cadena Vacia, "+tokenTipo6+">\n";
                 simbolo.valor= tokenTipo6;
             }
             
             String tokenTipo7 = matcher.group(7);
             if(tokenTipo7 != null){
-                cad+="Función Especial: "+tokenTipo7+"\n";
+                cad+="<Comentario Simple, "+tokenTipo7+">\n";
             }
             
             String tokenTipo8 = matcher.group(8);
             if(tokenTipo8 != null){
-                cad+="Operador Lógico: "+tokenTipo8+"\n";
+                cad+="<Comentario Largo, "+tokenTipo8+">\n";
             }
-
+            
             String tokenTipo9 = matcher.group(9);
             if(tokenTipo9 != null){
-                cad+="Signo de Agrupación: "+tokenTipo9+"\n";
+                cad+="<Cadena de Texto, "+tokenTipo9+">\n";
+                simbolo.valor= tokenTipo9;
             }
             
             String tokenTipo10 = matcher.group(10);
             if(tokenTipo10 != null){
-                cad+="Número: "+tokenTipo10+"\n";
-                if (bandera) {
-                    simbolo.valor=tokenTipo10;
-                    bandera=false;
-                }
+                cad+="<Función Especial, "+tokenTipo10+">\n";
             }
             
             String tokenTipo11 = matcher.group(11);
             if(tokenTipo11 != null){
-                cad+="Operador Aritmetico: "+tokenTipo11+"\n";
+                cad+="<Operador Lógico, "+tokenTipo11+">\n";
             }
-            
+
             String tokenTipo12 = matcher.group(12);
             if(tokenTipo12 != null){
-                cad+="Signo de Puntuación: "+tokenTipo12+"\n";
-                if (tokenTipo12.equals(";")) {
+                cad+="<Signo de Agrupación, "+tokenTipo12+">\n";
+            }
+            
+            String tokenTipo13 = matcher.group(13);
+            if(tokenTipo13 != null){
+                cad+="<Número, "+tokenTipo13+">\n";
+                if (bandera) {
+                    simbolo.valor=tokenTipo13;
+                    bandera=false;
+                }
+            }
+            
+            String tokenTipo14 = matcher.group(14);
+            if(tokenTipo14 != null){
+                cad+="<Operador Aritmetico, "+tokenTipo14+">\n";
+            }
+            
+            String tokenTipo15 = matcher.group(15);
+            if(tokenTipo15 != null){
+                cad+="<Signo de Puntuación, "+tokenTipo15+">\n";
+                if (tokenTipo15.equals(";")) {
                     if (!tablaSimbolos.containsKey(nombre)) {
                         tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));            
                         System.out.println("Nombre: "+nombre
@@ -520,6 +553,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AreaComponentesL;
+    private javax.swing.JTextArea AreaErrores;
     private javax.swing.JButton abrir;
     private javax.swing.JTextArea areaCodigo;
     private javax.swing.JButton compilar;
@@ -537,6 +571,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenuItem miBR;
     private javax.swing.JMenuItem miBuscar;
     private javax.swing.JLabel numCol;
