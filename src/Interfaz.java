@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
@@ -37,6 +36,7 @@ public class Interfaz extends javax.swing.JFrame {
     private ManejadorArchivos ma;
     
     public Interfaz() {
+        
         initComponents();
         fc = new JFileChooser(new File(".").getAbsolutePath());
         fc.setFileFilter(new FileNameExtensionFilter("*.DFN","dfn"));
@@ -48,7 +48,7 @@ public class Interfaz extends javax.swing.JFrame {
         compilar.setToolTipText("Compilar");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 //        areaCodigo.setPreferredSize(new Dimension(this.getSize().width, this.getSize().height/2));
-        areaCodigo.addCaretListener(new CaretListener(){
+        areaCodigo.jTextArea.addCaretListener(new CaretListener(){
             @Override
             public void caretUpdate(CaretEvent ce) {
                 JTextArea codigo = (JTextArea)ce.getSource();
@@ -62,7 +62,7 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
         panelPrincipal.setBackground(Color.LIGHT_GRAY);
-        areaCodigo.requestFocus();
+        areaCodigo.jTextArea.requestFocus();
     }
     private void update(int fil, int co){
         numFilas.setText(fil+"");
@@ -78,10 +78,8 @@ public class Interfaz extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollBar1 = new javax.swing.JScrollBar();
+        jScrolPane1 = new javax.swing.JScrollPane();
         panelPrincipal = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        areaCodigo = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         AreaErrores = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
@@ -91,7 +89,6 @@ public class Interfaz extends javax.swing.JFrame {
         abrir = new javax.swing.JButton();
         guardar = new javax.swing.JButton();
         compilar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         AreaComponentesL = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -103,6 +100,7 @@ public class Interfaz extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         miBuscar = new javax.swing.JMenuItem();
         miBR = new javax.swing.JMenuItem();
+	     areaCodigo = new AreaCodigo();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -111,15 +109,11 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
-        areaCodigo.setColumns(20);
-        areaCodigo.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        areaCodigo.setRows(5);
-        areaCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+        areaCodigo.jTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 areaCodigoKeyTyped(evt);
             }
         });
-        jScrollPane1.setViewportView(areaCodigo);
 
         AreaErrores.setEditable(false);
         AreaErrores.setColumns(20);
@@ -151,21 +145,10 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/font-icono-8596-32.png"))); // NOI18N
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
-        });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         AreaComponentesL.setColumns(20);
         AreaComponentesL.setRows(5);
         jScrollPane3.setViewportView(AreaComponentesL);
+        jScrolPane1.setViewportView(areaCodigo);
 
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
@@ -179,7 +162,7 @@ public class Interfaz extends javax.swing.JFrame {
                         .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelPrincipalLayout.createSequentialGroup()
                                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrolPane1, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelPrincipalLayout.createSequentialGroup()
                                         .addGap(112, 441, Short.MAX_VALUE)
                                         .addComponent(jLabel2)))
@@ -199,8 +182,6 @@ public class Interfaz extends javax.swing.JFrame {
                                 .addComponent(guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(compilar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -210,12 +191,11 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(abrir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(guardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(compilar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(compilar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE))
+                    .addComponent(jScrolPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -336,7 +316,7 @@ public class Interfaz extends javax.swing.JFrame {
             String path = fc.getSelectedFile().getPath(); 
             setTitle("Archivo: "+path);
             try{
-            areaCodigo.setText(ma.abrir(path));
+            areaCodigo.jTextArea.setText(ma.abrir(path));
             }catch(IOException e){
                 e.printStackTrace();
             }
@@ -360,30 +340,21 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void miBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBuscarActionPerformed
-        VentanaBuscar vb = new VentanaBuscar(this, true,areaCodigo);
+        VentanaBuscar vb = new VentanaBuscar(this, true,areaCodigo.jTextArea);
         vb.setVisible(true);
     }//GEN-LAST:event_miBuscarActionPerformed
-
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        /*JColorChooser c = new JColorChooser();
-        c.setVisible(true);*/
-    }//GEN-LAST:event_jButton1MouseClicked
 
     private void miBRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBRActionPerformed
         String cb = showInputDialog(this,"Introduzca la palabra a buscar.");
         if(cb == null){return;}
         String nc = showInputDialog(this,"Introduzca la palabra nueva.");
         if(nc == null){return;}
-        areaCodigo.setText(areaCodigo.getText().replaceAll(cb,nc));
+        areaCodigo.jTextArea.setText(areaCodigo.jTextArea.getText().replaceAll(cb,nc));
     }//GEN-LAST:event_miBRActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     public void compilar(){
         tablaSimbolos = new Hashtable<>();
-        String texto = areaCodigo.getText();
+        String texto = areaCodigo.jTextArea.getText();
         Simbolo simbolo = new Simbolo();
         String nombre = "";
         int linea=0;
@@ -508,7 +479,7 @@ public class Interfaz extends javax.swing.JFrame {
             String path = fc.getSelectedFile().getPath()+".dfn"; 
             setTitle("Archivo: "+path);
             try{
-                ma.guardar(path, areaCodigo.getText());
+                ma.guardar(path, areaCodigo.jTextArea.getText());
             }catch(IOException e){
                 e.printStackTrace();
             }
@@ -550,15 +521,14 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AreaComponentesL;
     private javax.swing.JTextArea AreaErrores;
     private javax.swing.JButton abrir;
-    private javax.swing.JTextArea areaCodigo;
+    private AreaCodigo areaCodigo;
     private javax.swing.JButton compilar;
     private javax.swing.JButton guardar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
@@ -568,8 +538,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JScrollBar jScrollBar1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrolPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenuItem miBR;
