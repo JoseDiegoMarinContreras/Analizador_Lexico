@@ -29,11 +29,11 @@ public class AreaCodigo extends javax.swing.JPanel {
         //----------------------------------------------------------------------
         jPanenum.setPreferredSize(new Dimension(40, 100));
         jPanenum.setLayout(null);
-        jPanenum.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+        /*jPanenum.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
                 public void mouseMoved(java.awt.event.MouseEvent evt){
                     System.out.println(evt.getX()+", "+evt.getY()+"\n");
                 }
-        });
+        });*/
         
 
         setLayout(new java.awt.BorderLayout());
@@ -83,12 +83,7 @@ public class AreaCodigo extends javax.swing.JPanel {
     private void jTextArea2KeyPressed(java.awt.event.KeyEvent evt) {
         if(evt.VK_ENTER == evt.getKeyCode()){
             agregarLinea();
-        }
-        //evt.VK_BACK_SPACE == evt.getKeyCode()
-    }
-
-   private void jTextArea2KeyReleased(java.awt.event.KeyEvent evt){
-      if(evt.VK_BACK_SPACE == evt.getKeyCode()){
+        }else if(evt.VK_BACK_SPACE == evt.getKeyCode()){
             int r = 0;
             int t = jTextArea.getText().length();
             for(int i = 0;i < t;i++){
@@ -96,11 +91,16 @@ public class AreaCodigo extends javax.swing.JPanel {
                     r++;
                 }
             }
-            showMessageDialog(null,r);
+            r--;
             if(r == (counter-2)){
                 quitarLinea();
             }
         }
+        //evt.VK_BACK_SPACE == evt.getKeyCode()
+    }
+
+   private void jTextArea2KeyReleased(java.awt.event.KeyEvent evt){
+
    }
    
    
