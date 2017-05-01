@@ -2,6 +2,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JLabel;
+import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 
 public class AreaCodigo extends javax.swing.JPanel {
@@ -14,16 +17,14 @@ public class AreaCodigo extends javax.swing.JPanel {
         jTextArea = new javax.swing.JTextArea();
         jPanenum = new javax.swing.JPanel();
         
-        initComponents();        
-        jTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextArea2KeyPressed(evt);
+        initComponents();      
+        
+        jTextArea.addCaretListener(new CaretListener(){
+            public void caretUpdate(CaretEvent e ) {
+                actNoLinea(e);
+                }
             }
-            
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-               jTextArea2KeyReleased(evt);
-            }
-        });
+        );
         //----------------------------------------------------------------------
         jPanenum.setPreferredSize(new Dimension(40, 100));
         jPanenum.setLayout(null);
@@ -77,28 +78,17 @@ public class AreaCodigo extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );        
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void jTextArea2KeyPressed(java.awt.event.KeyEvent evt) {
-        if(evt.VK_ENTER == evt.getKeyCode()){
-            agregarLinea();
-        }else if(evt.VK_BACK_SPACE == evt.getKeyCode()){
-            int r = 0;
-            int t = jTextArea.getText().length();
-            for(int i = 0;i < t;i++){
-                if(jTextArea.getText().substring(i, i+1).equals("\n")){
-                    r++;
-                }
-            }
-            r--;
-            if(r == (counter-2)){
-                quitarLinea();
-            }
+    private void actNoLinea(CaretEvent e){
+       int opc = jTextArea.getLineCount();
+       if(opc  == counter){
+           return;
+       }
+       if(opc > counter){
+        agregarLinea();
         }
-        //evt.VK_BACK_SPACE == evt.getKeyCode()
-    }
-
-   private void jTextArea2KeyReleased(java.awt.event.KeyEvent evt){
-
+       if(opc < counter){
+        quitarLinea();
+        }
    }
    
    
