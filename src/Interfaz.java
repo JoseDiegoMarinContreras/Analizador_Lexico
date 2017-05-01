@@ -355,7 +355,7 @@ public class Interfaz extends javax.swing.JFrame {
             if(c.getText().substring(i, i+pb.length()).equals(pb)){
                 areaCodigo.jTextArea.moveCaretPosition(i);
                 return fila;
-            }else if((c.getText().substring(i, i+pb.length()-1)+" ").equals(pb)){
+            }else if((c.getText().substring(i, i+pb.length())).equals(pb.substring(0, pb.length()-1)+"=")){
                 areaCodigo.jTextArea.moveCaretPosition(i);
                 return fila;
             }
@@ -486,7 +486,8 @@ public class Interfaz extends javax.swing.JFrame {
                                 }
                             }
                         }else{
-                            javax.swing.JOptionPane.showMessageDialog(this,"El id "+nombre+" ya existe");
+                            //Error por identificador duplicado
+                            //AreaErrores.setText("Error, en la linea "+simbolo.fila+" Identificador duplicado");
                         }
                     }
                 }
