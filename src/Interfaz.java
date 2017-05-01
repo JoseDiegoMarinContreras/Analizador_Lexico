@@ -368,7 +368,6 @@ public class Interfaz extends javax.swing.JFrame {
         String texto = areaCodigo.jTextArea.getText();
         Simbolo simbolo = new Simbolo();
         String nombre = "";
-        int linea=0;
         Pattern p = Pattern.compile(patron);
         Matcher matcher = p.matcher(texto);
         boolean bandera= false;
@@ -473,7 +472,9 @@ public class Interfaz extends javax.swing.JFrame {
                     }else{
                         if (simbolo.tipo==null) {
                             System.out.println("Modificando elemento...");
-                            Enumeration e = tablaSimbolos.keys();
+                            tablaSimbolos.get(nombre).valor= simbolo.valor;
+                            simbolo =new Simbolo();
+                            /*Enumeration e = tablaSimbolos.keys();
                             Simbolo s;
                             while (e.hasMoreElements()){
                                 System.out.println("Buscando y comparando "+e.nextElement()+" con "+nombre+" para modificar...");
@@ -484,10 +485,11 @@ public class Interfaz extends javax.swing.JFrame {
 //                                    tablaSimbolos.get((String)e.nextElement()).valor=simbolo.valor;
                                     System.out.println("Elemento modificado");
                                 }
-                            }
+                            }*/
                         }else{
                             //Error por identificador duplicado
                             //AreaErrores.setText("Error, en la linea "+simbolo.fila+" Identificador duplicado");
+                            return;
                         }
                     }
                 }
