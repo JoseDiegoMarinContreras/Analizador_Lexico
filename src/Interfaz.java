@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
@@ -9,9 +10,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
-import static javax.swing.JOptionPane.showMessageDialog;
 import static javax.swing.JOptionPane.showInputDialog;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -27,17 +26,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Interfaz extends javax.swing.JFrame {
     Hashtable<String, Simbolo> tablaSimbolos;
-    String[] palRes={"start","end","natural","integer","real","function","table","text","bit","infinity","main",
-                     "pi","euler","if","else","during","from","to","do","terminal","expression","thread","convertion"};
-    int fila;
-    int col;
+    int fila=1;
+    int col=1;
     
     private JFileChooser fc;
     private ManejadorArchivos ma;
     
-    public Interfaz() {
-        
+    public Interfaz() {        
         initComponents();
+        update(fila, col);
         fc = new JFileChooser(new File(".").getAbsolutePath());
         fc.setFileFilter(new FileNameExtensionFilter("*.DFN","dfn"));
         
@@ -276,7 +273,7 @@ public class Interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     String Alfabeto=("[\\w]*[\\x09]*[\\x20]*[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x23]*[\\x3F]*[\\x23]*[\\x22]*[\\x2E]*[\\x20]+");
     String Alfabeto2=("[\\w]*[\\x09]*[\\x20]*[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x3F]*[\\xF9]*[\\x2E]*[\\x20]+");
-    String patron = ("(start\\b|end\\b|natural\\b|integer\\b|real\\b|function\\b|table\\b|text\\b|bit\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b)|"
+    String patron = ("(start\\b|end\\b|natural\\b|integer\\b|real\\b|function\\b|table\\b|text\\b|bit\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b|call\\b)|"
             + "([:][:]|<=|>=|<|>|[=][?])|" //operador relacional
             + "([-][=]|[+][=]|[/][=]|[*][=]|[=])|" //operador de asignacion
             + "([a-zA-Z]+[a-zA-Z_0-9]*)|" //identificador
@@ -352,6 +349,20 @@ public class Interfaz extends javax.swing.JFrame {
         areaCodigo.jTextArea.setText(areaCodigo.jTextArea.getText().replaceAll(cb,nc));
     }//GEN-LAST:event_miBRActionPerformed
 
+    private int obtLinea(String pb){
+        JTextArea c = areaCodigo.jTextArea;
+        for(int i = 0;i <= (c.getText().length()-pb.length()) ;i++){
+            if(c.getText().substring(i, i+pb.length()).equals(pb)){
+                areaCodigo.jTextArea.moveCaretPosition(i);
+                return fila;
+            }else if((c.getText().substring(i, i+pb.length()-1)+" ").equals(pb)){
+                areaCodigo.jTextArea.moveCaretPosition(i);
+                return fila;
+            }
+        }
+        return fila;
+    }
+    
     public void compilar(){
         tablaSimbolos = new Hashtable<>();
         String texto = areaCodigo.jTextArea.getText();
@@ -391,7 +402,7 @@ public class Interfaz extends javax.swing.JFrame {
             if(tokenTipo4 != null){
                 cad+="<Identificador, "+tokenTipo4+">\n";
                 nombre= tokenTipo4;
-                linea= fila;
+                simbolo.fila= obtLinea(" "+tokenTipo4+" ");
             }
             
             String tokenTipo5 = matcher.group(5);
@@ -454,20 +465,41 @@ public class Interfaz extends javax.swing.JFrame {
             if(tokenTipo15 != null){
                 cad+="<Signo de Puntuación, "+tokenTipo15+">\n";
                 if (tokenTipo15.equals(";")) {
-                    if (!tablaSimbolos.containsKey(nombre)) {
-                        tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));            
-                        System.out.println("Nombre: "+nombre
-                                   +"\nTipo: "+simbolo.tipo
-                                   +"\nValor: "+simbolo.valor
-                                   +"\nFila: "+linea);
+                    System.out.println(nombre+"     "+simbolo.tipo+"    "+simbolo.valor+"     "+simbolo.fila);
+                    if (!tablaSimbolos.containsKey(nombre) && simbolo.tipo!=null) {
+                        System.out.println("Insertando elemento...");
+                        tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));
+                        simbolo= new Simbolo();
                     }else{
-                        javax.swing.JOptionPane.showMessageDialog(this,"El id "+nombre+" ya existe");
+                        if (simbolo.tipo==null) {
+                            System.out.println("Modificando elemento...");
+                            Enumeration e = tablaSimbolos.keys();
+                            Simbolo s;
+                            while (e.hasMoreElements()){
+                                System.out.println("Buscando y comparando "+e.nextElement()+" con "+nombre+" para modificar...");
+                                if (((String)e.nextElement()).equals(nombre)) {
+                                    System.out.println("Comparando "+e.nextElement()+" con "+nombre+"...");
+                                    s = (Simbolo)tablaSimbolos.get((String)e.nextElement());
+                                    tablaSimbolos.replace(nombre, s, new Simbolo(s.tipo,simbolo.valor,s.fila));
+//                                    tablaSimbolos.get((String)e.nextElement()).valor=simbolo.valor;
+                                    System.out.println("Elemento modificado");
+                                }
+                            }
+                        }else{
+                            javax.swing.JOptionPane.showMessageDialog(this,"El id "+nombre+" ya existe");
+                        }
                     }
                 }
             }
-            
-
-
+        }
+        Enumeration elem = tablaSimbolos.elements();
+        Simbolo sim;
+        while (elem.hasMoreElements()){
+            sim = (Simbolo)elem.nextElement();
+            System.out.println("Nombre: "+tablaSimbolos.keySet()
+                    +"\nTipo: "+sim.tipo
+                    +"\nValor: "+sim.valor
+                    +"\nFila: "+sim.fila);
         }
         AreaComponentesL.setText(cad);
     }

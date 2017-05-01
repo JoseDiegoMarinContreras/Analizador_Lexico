@@ -1,9 +1,7 @@
-
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JLabel;
-import static javax.swing.JOptionPane.showMessageDialog;
 
 
 public class AreaCodigo extends javax.swing.JPanel {
