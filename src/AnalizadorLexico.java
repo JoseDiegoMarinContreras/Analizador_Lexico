@@ -147,7 +147,6 @@ public class AnalizadorLexico {
         re[1] = "Error lexico en la linea "+l+". "+tokens[c].substring(1,tokens[c].indexOf(","))+": "+temp+" "
         +temp.charAt(r.length())+" encontrado.\n";        
     }
-       
     private void tabla(int i, String temp, int l){       
         if (i == 1) {// verificar si el grupo es de palabras reservadas
             for (String palRes : tipoDato) {//Recorremos el arreglo de los tipos de datos
@@ -155,44 +154,51 @@ public class AnalizadorLexico {
                     simbolo.tipo= temp;//Le asignamos el tipo de dato
                 }
             }
-        }else if (i == 4) {//Verificar si el grupo corresponde a un identificador
+        }
+        if (i == 4) {//Verificar si el grupo corresponde a un identificador
             nombre = temp;//Asignamos el identificador a nombre
             simbolo.fila = l;//Asignamos la fila en la que fue declarado el identificador
-        }else if (i == 3) {//Verificar si el grupo corresponde al de un operador de asignación
+        }
+        if (i == 3) {//Verificar si el grupo corresponde al de un operador de asignación
             if (temp.equals("=")) {//Verificar si el operador de asignación es el igual
                 bandera = true;//Activamos la bandera que nos permitira asignar el valor
             }
-        }else if ((i == 6 || i == 9) && bandera) {//Verificar si el grupo corresponde a una cadena vacia o a una cadena de texto, además verificar si corresponde a un valor
+        }
+        if ((i == 6 || i == 9) && bandera) {//Verificar si el grupo corresponde a una cadena vacia o a una cadena de texto, además verificar si corresponde a un valor
             simbolo.valor = temp;//Asignamos el valor 
             bandera = false;//Desactivamos la bandera
-        }else if (i == 13 && bandera) {//Verificar si el grupo es un numero y si la bandera esta activada para considerarla como el valor del idenficador
+        }
+        if (i == 13 && bandera) {//Verificar si el grupo es un numero y si la bandera esta activada para considerarla como el valor del idenficador
             simbolo.valor = temp;//Asignamos el valor al identificador
             bandera = false;//Desactivar la bandera
-        }else if(i == 15) {//Verificar si el grupo corresponde a un signo de puntuación
+        }
+        if(i == 15) {//Verificar si el grupo corresponde a un signo de puntuación
             if (temp.equals(";")) {//Verificar si el signo de puntuación corresponde con el delimitador de linea
-                if (!tablaSimbolos.containsKey(nombre) && simbolo.tipo!=null) {//Verificamos que la tabla de simbolos no contenga el identificador y verificar que realmente se esta declarando la variable y no modificando
+                if (!tablaSimbolos.containsKey(nombre) && simbolo.tipo!=null && simbolo.valor!=null && simbolo.fila!=0 && !nombre.equals("")) {//Verificamos que la tabla de simbolos no contenga el identificador y verificar que realmente se esta declarando la variable y no modificando
                     tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));//Insertamos en la tabla un nuevo simbolo
-                    Enumeration elem = tablaSimbolos.elements();//Obtenemos los elementos de la tabla de simbolos
-                    Simbolo sim;//Declaramos una variable de tipo simbolo que nos permitira acceder a los datos de cada simbolo de la tabla de simbolos
-                    while (elem.hasMoreElements()){//Verificamos que la tabla contenga más simbolos
-                        sim = (Simbolo)elem.nextElement();//Asignamos los datos del simbolo a la variable creada
-                        System.out.println("Nombre: "+tablaSimbolos.keySet()
-                                +"\nTipo: "+sim.tipo
-                                +"\nValor: "+sim.valor
-                                +"\nFila: "+sim.fila);//Imprimimos los datos de caada identificador insertado en la tabla de simbolos
-                    }
                     simbolo = new Simbolo();//inicializamos la variable simbolo para que este disponible para recibir nuevos valores
+                }else{//En este caso, significa que el identificador ya existe en la tabla de simbolos
+                    if (simbolo.tipo==null) {//Verificamos si el identificador que se intenta insertar, se esta declarando o bien si se pretende modificar el valor de éste
+                        tablaSimbolos.get(nombre).valor= simbolo.valor;//Buscamos el identificador en la tabla de simbolos y actualizamos su valor
+                        simbolo =new Simbolo();//Inicializamos la variable simbolo para que este disponible para almacenar nuevo valores para los identificadores
+                    }else{
+                        //Error por identificador duplicado
+                        //AreaErrores.setText("Error, en la linea "+simbolo.fila+" Identificador duplicado");
+                    }
                 }
-            }else{//En este caso, significa que el identificador ya existe en la tabla de simbolos
-                if (simbolo.tipo==null) {//Verificamos si el identificador que se intenta insertar, se esta declarando o bien si se pretende modificar el valor de éste
-                    tablaSimbolos.get(nombre).valor= simbolo.valor;//Buscamos el identificador en la tabla de simbolos y actualizamos su valor
-                    System.out.println(i+" Editando identificador:\nValor: "+simbolo.valor);
-                    simbolo =new Simbolo();//Inicializamos la variable simbolo para que este disponible para almacenar nuevo valores para los identificadores
-                }else{
-                    //Error por identificador duplicado
-                    //AreaErrores.setText("Error, en la linea "+simbolo.fila+" Identificador duplicado");
-                }
+                mostrarElemTabla();//Mostramos los identificadores existentes en la tabla de simbolos
             }
+        }
+    }
+    private void mostrarElemTabla(){
+        Enumeration elem = tablaSimbolos.elements();//Obtenemos los elementos de la tabla de simbolos
+        Simbolo sim;//Declaramos una variable de tipo simbolo que nos permitira acceder a los datos de cada simbolo de la tabla de simbolos
+        while (elem.hasMoreElements()){//Verificamos que la tabla contenga más simbolos
+            sim = (Simbolo)elem.nextElement();//Asignamos los datos del simbolo a la variable creada
+            System.out.println("Nombre: "+tablaSimbolos.keySet()
+                    +"\nTipo: "+sim.tipo
+                    +"\nValor: "+sim.valor
+                    +"\nFila: "+sim.fila);//Imprimimos los datos de caada identificador insertado en la tabla de simbolos
         }
     }
 }
