@@ -103,7 +103,7 @@ public class AnalizadorLexico {
                                     break;
                                 }
                             }
-                    }
+                        }
                         compLex(w, y+1);
                         w="";
                     }
@@ -225,19 +225,8 @@ public class AnalizadorLexico {
                         //AreaErrores.setText("Error, en la linea "+simbolo.fila+" Identificador duplicado");
                     }
                 }
-                mostrarElemTabla();//Mostramos los identificadores existentes en la tabla de simbolos
+                
             }
-        }
-    }
-    private void mostrarElemTabla(){
-        Enumeration elem = tablaSimbolos.elements();//Obtenemos los elementos de la tabla de simbolos
-        Simbolo sim;//Declaramos una variable de tipo simbolo que nos permitira acceder a los datos de cada simbolo de la tabla de simbolos
-        while (elem.hasMoreElements()){//Verificamos que la tabla contenga más simbolos
-            sim = (Simbolo)elem.nextElement();//Asignamos los datos del simbolo a la variable creada
-            System.out.println("Nombre: "+tablaSimbolos.keySet()
-                    +"\nTipo: "+sim.tipo
-                    +"\nValor: "+sim.valor
-                    +"\nFila: "+sim.fila);//Imprimimos los datos de caada identificador insertado en la tabla de simbolos
         }
     }
 }

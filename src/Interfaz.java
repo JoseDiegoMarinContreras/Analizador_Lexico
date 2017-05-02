@@ -86,6 +86,14 @@ public class Interfaz extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollBar1 = new javax.swing.JScrollBar();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuBar3 = new javax.swing.JMenuBar();
+        jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
         panelPrincipal = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         AreaErrores = new javax.swing.JTextArea();
@@ -108,6 +116,24 @@ public class Interfaz extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         miBuscar = new javax.swing.JMenuItem();
         miBR = new javax.swing.JMenuItem();
+        jMenu9 = new javax.swing.JMenu();
+        tablaSim = new javax.swing.JMenuItem();
+
+        jMenu3.setText("File");
+        jMenuBar2.add(jMenu3);
+
+        jMenu4.setText("Edit");
+        jMenuBar2.add(jMenu4);
+
+        jMenu5.setText("jMenu5");
+
+        jMenu6.setText("jMenu6");
+
+        jMenu7.setText("File");
+        jMenuBar3.add(jMenu7);
+
+        jMenu8.setText("Edit");
+        jMenuBar3.add(jMenu8);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -291,6 +317,18 @@ public class Interfaz extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu9.setText("Tabla Simbolos");
+
+        tablaSim.setText("Generar Tabla");
+        tablaSim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tablaSimActionPerformed(evt);
+            }
+        });
+        jMenu9.add(tablaSim);
+
+        jMenuBar1.add(jMenu9);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -425,6 +463,20 @@ public class Interfaz extends javax.swing.JFrame {
         jMenuItem1.setEnabled(true);
     }//GEN-LAST:event_jMenuItem5MousePressed
 
+    private void tablaSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tablaSimActionPerformed
+        // TODO add your handling code here:
+        try{
+            if (al.tablaSimbolos.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this,"La tabla de símbolos esta vacia");
+            }else{
+                TablaSimbolos tabla = new TablaSimbolos(al.tablaSimbolos);
+                tabla.setVisible(true);//Mostramos los identificadores existentes en la tabla de simbolos
+            }
+        }catch(Exception e){
+            javax.swing.JOptionPane.showMessageDialog(this,"La tabla de símbolos no ha sido creada");
+        }
+    }//GEN-LAST:event_tablaSimActionPerformed
+
     public void abrir(){        
         int r = fc.showOpenDialog(this);
         if(r == JFileChooser.APPROVE_OPTION){
@@ -437,151 +489,7 @@ public class Interfaz extends javax.swing.JFrame {
             }
         }    
     }
-    
-    /*private int obtLinea(String pb){
-        JTextArea c = areaCodigo.jTextArea;
-        for(int i = 0;i <= (c.getText().length()-pb.length()) ;i++){
-            if(c.getText().substring(i, i+pb.length()).equals(pb)){
-                areaCodigo.jTextArea.moveCaretPosition(i);
-                return fila;
-            }else if((c.getText().substring(i, i+pb.length())).equals(pb.substring(0, pb.length()-1)+"=")){
-                areaCodigo.jTextArea.moveCaretPosition(i);
-                return fila;
-            }
-        }
-        return fila;
-    } */   
-       
-       
-/*    public void compilar(){
-        tablaSimbolos = new Hashtable<>();
-        String texto = areaCodigo.jTextArea.getText();
-        Simbolo simbolo = new Simbolo();
-        String nombre = "";
-        Pattern p = Pattern.compile(patron);
-        Matcher matcher = p.matcher(texto);
-        boolean bandera= false;
-        String cad = "";
-
-        while (matcher.find()){
-            String tokenTipo1 = matcher.group(1);
-            if(tokenTipo1 != null){
-                cad+="<Palabra Reservada, "+tokenTipo1+">\n";
-                for(String tipo:tipoDato){
-                    if (tokenTipo1.equals(tipo)) {
-                        simbolo.tipo=tokenTipo1;
-                    }
-                }
-            }
-
-            String tokenTipo2 = matcher.group(2);
-            if(tokenTipo2 != null){
-                cad+="<Operador Relacional, "+tokenTipo2+">\n";
-            }
-
-           String tokenTipo3 = matcher.group(3);
-            if(tokenTipo3 != null){
-                cad+="<Operador de Asignación, "+tokenTipo3+">\n";
-                if (!bandera) {
-                    bandera=true;
-                }
-            }
-            
-            String tokenTipo4 = matcher.group(4);
-            if(tokenTipo4 != null){
-                cad+="<Identificador, "+tokenTipo4+">\n";
-                nombre= tokenTipo4;
-                simbolo.fila= obtLinea(" "+tokenTipo4+" ");
-            }
-            
-            String tokenTipo5 = matcher.group(5);
-            if(tokenTipo5 != null){
-                cad+="<Concatenación, "+tokenTipo5+">\n";
-            }
-            
-            String tokenTipo6 = matcher.group(6);
-            if(tokenTipo6 != null){
-                cad+="<Cadena Vacia, "+tokenTipo6+">\n";
-                simbolo.valor= tokenTipo6;
-            }
-            
-            String tokenTipo7 = matcher.group(7);
-            if(tokenTipo7 != null){
-                cad+="<Comentario Simple, "+tokenTipo7+">\n";
-            }
-            
-            String tokenTipo8 = matcher.group(8);
-            if(tokenTipo8 != null){
-                cad+="<Comentario Largo, "+tokenTipo8+">\n";
-            }
-            
-            String tokenTipo9 = matcher.group(9);
-            if(tokenTipo9 != null){
-                cad+="<Cadena de Texto, "+tokenTipo9+">\n";
-                simbolo.valor= tokenTipo9;
-            }
-            
-            String tokenTipo10 = matcher.group(10);
-            if(tokenTipo10 != null){
-                cad+="<Función Especial, "+tokenTipo10+">\n";
-            }
-            
-            String tokenTipo11 = matcher.group(11);
-            if(tokenTipo11 != null){
-                cad+="<Operador Lógico, "+tokenTipo11+">\n";
-            }
-
-            String tokenTipo12 = matcher.group(12);
-            if(tokenTipo12 != null){
-                cad+="<Signo de Agrupación, "+tokenTipo12+">\n";
-            }
-            
-            String tokenTipo13 = matcher.group(13);
-            if(tokenTipo13 != null){
-                cad+="<Número, "+tokenTipo13+">\n";
-                if (bandera) {
-                    simbolo.valor=tokenTipo13;
-                    bandera=false;
-                }
-            }
-            
-            String tokenTipo14 = matcher.group(14);
-            if(tokenTipo14 != null){
-                cad+="<Operador Aritmetico, "+tokenTipo14+">\n";
-            }
-            
-            String tokenTipo15 = matcher.group(15);
-            if(tokenTipo15 != null){
-                cad+="<Signo de Puntuación, "+tokenTipo15+">\n";
-                if (tokenTipo15.equals(";")) {
-                    if (!tablaSimbolos.containsKey(nombre) && simbolo.tipo!=null) {
-                        tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));
-                        simbolo= new Simbolo();
-                    }else{
-                        if (simbolo.tipo==null) {
-                            tablaSimbolos.get(nombre).valor= simbolo.valor;
-                            simbolo =new Simbolo();
-                        }else{
-                            //Error por identificador duplicado
-                            //AreaErrores.setText("Error, en la linea "+simbolo.fila+" Identificador duplicado");
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-        Enumeration elem = tablaSimbolos.elements();
-        Simbolo sim;
-        while (elem.hasMoreElements()){
-            sim = (Simbolo)elem.nextElement();
-            System.out.println("Nombre: "+tablaSimbolos.keySet()
-                    +"\nTipo: "+sim.tipo
-                    +"\nValor: "+sim.valor
-                    +"\nFila: "+sim.fila);
-        }
-        AreaComponentesL.setText(cad);
-    }*/
-    
+        
     public void guardarComo(){
         int r = fc.showSaveDialog(this);
         if(r == JFileChooser.APPROVE_OPTION){
@@ -640,7 +548,16 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
@@ -654,6 +571,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel numCol;
     private javax.swing.JLabel numFilas;
     private javax.swing.JPanel panelPrincipal;
+    private javax.swing.JMenuItem tablaSim;
     // End of variables declaration//GEN-END:variables
 
 }
