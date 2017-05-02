@@ -75,6 +75,18 @@ public class AnalizadorLexico {
                             }
                         }
                     }else if(stop.contains(texto[y].substring(x+1,x+2))){//separador
+                        if(w.equals("\"")){
+                            for(x++;x<= texto[y].length();x++){
+                                if(x == texto[y].length()){
+                                    re[1]+="Error en la linea #"+(y+1)+". "+"\" perdido.\n";
+                                    break;
+                                }
+                                w += texto[y].substring(x,x+1);
+                                if(texto[y].substring(x,x+1).equals("\"")){
+                                    break;
+                                }
+                            }
+                    }
                         compLex(w, y+1);
                         w="";
                     }
@@ -113,13 +125,17 @@ public class AnalizadorLexico {
         Pattern p = Pattern.compile(patron);
         Matcher matcher = p.matcher(temp);
         matcher.find();
-        String r = matcher.group(0);
-        int c=1;
+        String r = null;
+        int c = 0;
         for (int i =1; i <= tokens.length;i++) {
             if(matcher.group(i) != null){
+                if(r == null){
+                    r = matcher.group(i);
+                    c=i-1;
+                }
                 if(r.length() < matcher.group(i).length()){
                     r = matcher.group(i);
-                    c = i;
+                    c = i-1;
                 }else if(temp.length() == r.length()){ 
                     tabla(i, temp, l); // Enviar los datos para realizar la inserción en la tabla de simbolos
                     re[0] += tokens[i-1];
@@ -128,7 +144,7 @@ public class AnalizadorLexico {
                 }
             }
         }
-        re[1] = "Error lexico en la linea "+l+". "+tokens[c-1].substring(1,tokens[c-1].indexOf(","))+" en "+temp+" "
+        re[1] = "Error lexico en la linea "+l+". "+tokens[c-1].substring(1,tokens[c-1].indexOf(","))+": "+temp+" "
         +temp.charAt(r.length())+" encontrado.\n";        
     }
        
