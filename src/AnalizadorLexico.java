@@ -144,7 +144,7 @@ public class AnalizadorLexico {
                 }
             }
         }
-        re[1] = "Error lexico en la linea "+l+". "+tokens[c-1].substring(1,tokens[c-1].indexOf(","))+": "+temp+" "
+        re[1] = "Error lexico en la linea "+l+". "+tokens[c].substring(1,tokens[c].indexOf(","))+": "+temp+" "
         +temp.charAt(r.length())+" encontrado.\n";        
     }
        
