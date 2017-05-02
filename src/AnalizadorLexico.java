@@ -57,21 +57,38 @@ public class AnalizadorLexico {
                 if(x < texto[y].length()-1){
                     if(stop.substring(8,14).contains(w) || stop.substring(1,3).contains(w)){
                         if(x < texto[y].length()-1){
-                            if(texto[y].substring(x+1,x+2).equals("=")){// si es +=,-=,/=,*=,>=,<=
-                                w += texto[y].substring(x+1,x+2);
-                                x++;         
+                            if((w.equals("+") || w.equals("-")) && lexDig()){
+                                boolean b = false;
+                                String dig="0123456789";
+                                for(x++;x<= texto[y].length();x++){
+                                    if(x == texto[y].length()){
+                                        break;
+                                    }
+                                    if(!texto[y].substring(x,x+1).equals(" ") && !b){
+                                        if(dig.contains(texto[y].substring(x,x+1))){
+                                            w += texto[y].substring(x,x+1);
+                                        }else{
+                                            break;
+                                        }
+                                    }
+                                }      
                                 compLex(w, y+1);
-                                w="";                       
+                                w="";  
+                            }else if(texto[y].substring(x+1,x+2).equals("=")){// si es +=,-=,/=,*=,>=,<=
+                                    w += texto[y].substring(x+1,x+2);
+                                    x++;         
+                                    compLex(w, y+1);
+                                    w="";                       
                             }else if(w.equals(":") && texto[y].substring(x+1,x+2).equals(":")){//si es ::
-                                w += texto[y].substring(x+1,x+2);
-                                x++;         
-                                compLex(w, y+1);
-                                w="";                                
+                                    w += texto[y].substring(x+1,x+2);
+                                    x++;         
+                                    compLex(w, y+1);
+                                    w="";                                
                             }else if(w.equals("=") && texto[y].substring(x+1,x+2).equals("?")){// si es =?
-                                w += texto[y].substring(x+1,x+2);
-                                x++;         
-                                compLex(w, y+1);
-                                w="";                                
+                                    w += texto[y].substring(x+1,x+2);
+                                    x++;         
+                                    compLex(w, y+1);
+                                    w="";                                
                             }
                         }
                     }else if(stop.contains(texto[y].substring(x+1,x+2))){//separador
@@ -112,6 +129,22 @@ public class AnalizadorLexico {
             w="";
         }
         return re;
+    }
+    
+    public boolean lexDig(){
+        String [] ar = re[0].split("\n");
+        if(ar.length==1){
+            if(ar[0].equals("")){
+                return true;
+            }else if(ar[ar.length-1].substring(1,ar[ar.length-1].indexOf(",")).equals("Número")){
+                return false;
+            }
+            return true;
+        }
+        if(ar[ar.length-1].substring(1,ar[ar.length-1].indexOf(",")).equals("Número")){
+            return false;
+        }
+        return true;
     }
     
     Simbolo simbolo = new Simbolo();
