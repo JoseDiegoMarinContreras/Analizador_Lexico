@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
@@ -107,7 +108,10 @@ public class Interfaz extends javax.swing.JFrame {
 
         AreaErrores.setEditable(false);
         AreaErrores.setColumns(20);
+        AreaErrores.setFont(new java.awt.Font("Monospaced", 0, 24)); // NOI18N
+        AreaErrores.setForeground(new java.awt.Color(255, 0, 0));
         AreaErrores.setRows(5);
+        AreaErrores.setCaretColor(new java.awt.Color(255, 51, 51));
         jScrollPane2.setViewportView(AreaErrores);
 
         jLabel2.setText("Fila:");

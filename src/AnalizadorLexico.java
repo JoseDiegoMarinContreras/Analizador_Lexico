@@ -124,28 +124,30 @@ public class AnalizadorLexico {
         }
         Pattern p = Pattern.compile(patron);
         Matcher matcher = p.matcher(temp);
-        matcher.find();
         String r = null;
         int c = 0;
-        for (int i =1; i <= tokens.length;i++) {
-            if(matcher.group(i) != null){
-                if(r == null){
-                    r = matcher.group(i);
-                    c=i-1;
-                }
-                if(r.length() < matcher.group(i).length()){
-                    r = matcher.group(i);
-                    c = i-1;
-                }else if(temp.length() == r.length()){ 
-                    tabla(i, temp, l); // Enviar los datos para realizar la inserción en la tabla de simbolos
-                    re[0] += tokens[i-1];
-                    re[0] = re[0].replace("%s", temp);
-                    return;
+        //Ciclo while para que encuentre todas las coincidencias, y la que tenga mas caracteres sera la mas probable
+        while(matcher.find()){
+            for (int i =1; i <= tokens.length;i++) {
+                if(matcher.group(i) != null){
+                    if(r == null){
+                        r = matcher.group(i);
+                        c=i-1;
+                    }
+                    if(r.length() < matcher.group(i).length()){
+                        r = matcher.group(i);
+                        c = i-1;
+                    }else if(temp.length() == r.length()){ 
+                        tabla(i, temp, l); // Enviar los datos para realizar la inserción en la tabla de simbolos
+                        re[0] += tokens[i-1];
+                        re[0] = re[0].replace("%s", temp);
+                        return;
+                    }
                 }
             }
         }
-        re[1] = "Error lexico en la linea "+l+". "+tokens[c].substring(1,tokens[c].indexOf(","))+": "+temp+" "
-        +temp.charAt(r.length())+" encontrado.\n";        
+        re[1] = "Error lexico en la linea "+l+". "+tokens[c].substring(1,tokens[c].indexOf(","))+": "+temp+", "
+        +temp.replace(r, " ")+" encontrado.\n";        //se reemplaza lo que esta bien y lo demas lo pondra en error
     }
        
     private void tabla(int i, String temp, int l){       
