@@ -276,9 +276,9 @@ public class Interfaz extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    String Alfabeto=("[\\w]*[\\x09]*[\\x20]*[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x23]*[\\x3F]*[\\x23]*[\\x22]*[\\x2E]*[\\x20]+");
-    String Alfabeto2=("[\\w]*[\\x09]*[\\x20]*[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x3F]*[\\xF9]*[\\x2E]*[\\x20]+");
-    String patron = ("(start\\b|end\\b|natural\\b|integer\\b|real\\b|function\\b|table\\b|text\\b|bit\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b|call\\b)|"
+    String Alfabeto=("[\\w]*[\\x09]*[\\x20]+[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x23]*[\\x3F]*[\\x23]*[\\x22]*[\\x2E]*[\\x20]+");
+    String Alfabeto2=("[\\w]*[\\x09]*[\\x20]*[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x3F]*[\\xF9]*[\\x2E]*");
+    String patron = ("(start\\b|end\\b|natural\\b|integer\\b|real\\b|function\\b|table\\b|text\\b|bit\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b|call\\b|in\\b|out\\b|graphic\\b)|"
             + "([:][:]|<=|>=|<|>|[=][?])|" //operador relacional
             + "([-][=]|[+][=]|[/][=]|[*][=]|[=])|" //operador de asignacion
             + "([a-zA-Z]+[a-zA-Z_0-9]*)|" //identificador
@@ -286,7 +286,7 @@ public class Interfaz extends javax.swing.JFrame {
             + "([\\x22][\\x22])|" //Cadena Vacia
             + "([*][*]["+Alfabeto+"]+)|" //Comentario Simple
             + "([{][["+Alfabeto+"]+[\\x0A]*]+[}])|" //Comentario Largo
-            + "([\\x22]["+Alfabeto+"]+[\\x22])|" //Cadenas
+            + "([\\x22]["+Alfabeto2+"]+[\\x22])|" //Cadenas
             + "([#]|[\\x22]|[*][*]|[{]|[}])|" //signos especiales
             + "(AND|OR)|" //operador logico
             + "(\\x28|\\x29|\\x5B|\\x5D)|"//signos de agrupacion
@@ -302,14 +302,6 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void areaCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_areaCodigoKeyTyped
         // TODO add your handling code here:
-//        cad+=evt.getKeyChar();
-//        for (int i = 0; i < palRes.length; i++) {
-//            if (cad.equals(palRes[i]+" ")) {
-//                areaCodigo.setForeground(Color.red);
-//                //System.out.println(cad);
-//                cad="";
-//            }
-//        }
     }//GEN-LAST:event_areaCodigoKeyTyped
 
     private void abrirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMouseClicked
@@ -360,7 +352,7 @@ public class Interfaz extends javax.swing.JFrame {
             if(c.getText().substring(i, i+pb.length()).equals(pb)){
                 areaCodigo.jTextArea.moveCaretPosition(i);
                 return fila;
-            }else if((c.getText().substring(i, i+pb.length()-1)+" ").equals(pb)){
+            }else if((c.getText().substring(i, i+pb.length())).equals(pb.substring(0, pb.length()-1)+"=")){
                 areaCodigo.jTextArea.moveCaretPosition(i);
                 return fila;
             }
@@ -428,7 +420,6 @@ public class Interfaz extends javax.swing.JFrame {
         String texto = areaCodigo.jTextArea.getText();
         Simbolo simbolo = new Simbolo();
         String nombre = "";
-        int linea=0;
         Pattern p = Pattern.compile(patron);
         Matcher matcher = p.matcher(texto);
         boolean bandera= false;
@@ -525,28 +516,17 @@ public class Interfaz extends javax.swing.JFrame {
             if(tokenTipo15 != null){
                 cad+="<Signo de Puntuación, "+tokenTipo15+">\n";
                 if (tokenTipo15.equals(";")) {
-                    System.out.println(nombre+"     "+simbolo.tipo+"    "+simbolo.valor+"     "+simbolo.fila);
                     if (!tablaSimbolos.containsKey(nombre) && simbolo.tipo!=null) {
-                        System.out.println("Insertando elemento...");
                         tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));
                         simbolo= new Simbolo();
                     }else{
                         if (simbolo.tipo==null) {
-                            System.out.println("Modificando elemento...");
-                            Enumeration e = tablaSimbolos.keys();
-                            Simbolo s;
-                            while (e.hasMoreElements()){
-                                System.out.println("Buscando y comparando "+e.nextElement()+" con "+nombre+" para modificar...");
-                                if (((String)e.nextElement()).equals(nombre)) {
-                                    System.out.println("Comparando "+e.nextElement()+" con "+nombre+"...");
-                                    s = (Simbolo)tablaSimbolos.get((String)e.nextElement());
-                                    tablaSimbolos.replace(nombre, s, new Simbolo(s.tipo,simbolo.valor,s.fila));
-//                                    tablaSimbolos.get((String)e.nextElement()).valor=simbolo.valor;
-                                    System.out.println("Elemento modificado");
-                                }
-                            }
+                            tablaSimbolos.get(nombre).valor= simbolo.valor;
+                            simbolo =new Simbolo();
                         }else{
-                            javax.swing.JOptionPane.showMessageDialog(this,"El id "+nombre+" ya existe");
+                            //Error por identificador duplicado
+                            //AreaErrores.setText("Error, en la linea "+simbolo.fila+" Identificador duplicado");
+                            return;
                         }
                     }
                 }
@@ -564,7 +544,6 @@ public class Interfaz extends javax.swing.JFrame {
         AreaComponentesL.setText(cad);
     }*/
     
-    
     public void guardar(){
         int r = fc.showOpenDialog(this);
         if(r == JFileChooser.APPROVE_OPTION){
@@ -577,8 +556,6 @@ public class Interfaz extends javax.swing.JFrame {
             }
         }  
     }
-    
-    String cad = "";
     /**
      * @param args the command line arguments
      */
