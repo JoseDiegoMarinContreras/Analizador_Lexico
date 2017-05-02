@@ -420,9 +420,7 @@ public class Interfaz extends javax.swing.JFrame {
                     w="";
                 }
             }
-            //showMessageDialog(this,w);
         }
-            //String tokenTipo1 = matcher.group(1);
     }
     
 /*    public void compilar(){
