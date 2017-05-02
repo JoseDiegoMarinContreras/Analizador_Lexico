@@ -2,7 +2,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JLabel;
-import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 

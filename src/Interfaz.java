@@ -2,17 +2,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Hashtable;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import static javax.swing.JOptionPane.showInputDialog;
-import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /*
@@ -26,19 +21,18 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author abv17
  */
 public class Interfaz extends javax.swing.JFrame {
-    Hashtable<String, Simbolo> tablaSimbolos;
     int fila=1;
     int col=1;
-    final String[] tokens ={"<Palabra Reservada, %s>\n", "<Operador Relacional, %s>\n", "<Operador de Asignación, %s>\n",
-                     "<Identificador, %s>\n", "<Concatenación, %s>\n", "<Cadena Vacia, %s>\n", "<Comentario Simple, %s>\n",
-                     "<Comentario Largo, %s>\n", "<Cadena de Texto, %s>\n", "<Función Especial, %s>\n", "<Operador Lógico, %s>\n",
-                     "<Signo de Agrupación, %s>\n", "<Número, %s>\n", "<Operador Aritmetico, %s>\n","<Signo de Puntuación, %s>\n"};
+    AnalizadorLexico al;
     
     private JFileChooser fc;
     private ManejadorArchivos ma;
     
-    public Interfaz() {        
+    public Interfaz() { 
+        al = new AnalizadorLexico();
+        areaCodigo = new AreaCodigo();
         initComponents();
+        jScrollPane1.setViewportView(areaCodigo);
         update(fila, col);
         fc = new JFileChooser(new File(".").getAbsolutePath());
         fc.setFileFilter(new FileNameExtensionFilter("*.DFN","dfn"));
@@ -80,7 +74,7 @@ public class Interfaz extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrolPane1 = new javax.swing.JScrollPane();
+        jScrollBar1 = new javax.swing.JScrollBar();
         panelPrincipal = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         AreaErrores = new javax.swing.JTextArea();
@@ -93,6 +87,7 @@ public class Interfaz extends javax.swing.JFrame {
         compilar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         AreaComponentesL = new javax.swing.JTextArea();
+        jScrollPane1 = new javax.swing.JScrollPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -102,18 +97,11 @@ public class Interfaz extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         miBuscar = new javax.swing.JMenuItem();
         miBR = new javax.swing.JMenuItem();
-	     areaCodigo = new AreaCodigo();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
-            }
-        });
-
-        areaCodigo.jTextArea.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                areaCodigoKeyTyped(evt);
             }
         });
 
@@ -147,10 +135,10 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
+        AreaComponentesL.setEditable(false);
         AreaComponentesL.setColumns(20);
         AreaComponentesL.setRows(5);
         jScrollPane3.setViewportView(AreaComponentesL);
-        jScrolPane1.setViewportView(areaCodigo);
 
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
@@ -163,11 +151,11 @@ public class Interfaz extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelPrincipalLayout.createSequentialGroup()
-                                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jScrolPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelPrincipalLayout.createSequentialGroup()
+                                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelPrincipalLayout.createSequentialGroup()
                                         .addGap(112, 441, Short.MAX_VALUE)
-                                        .addComponent(jLabel2)))
+                                        .addComponent(jLabel2))
+                                    .addComponent(jScrollPane1))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(panelPrincipalLayout.createSequentialGroup()
@@ -196,8 +184,8 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(compilar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
-                    .addComponent(jScrolPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -276,33 +264,12 @@ public class Interfaz extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    String Alfabeto=("[\\w]*[\\x09]*[\\x20]+[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x23]*[\\x3F]*[\\x23]*[\\x22]*[\\x2E]*[\\x20]+");
-    String Alfabeto2=("[\\w]*[\\x09]*[\\x20]*[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x3F]*[\\xF9]*[\\x2E]*");
-    String patron = ("(start\\b|end\\b|natural\\b|integer\\b|real\\b|function\\b|table\\b|text\\b|bit\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b|call\\b|in\\b|out\\b|graphic\\b)|"
-            + "([:][:]|<=|>=|<|>|[=][?])|" //operador relacional
-            + "([-][=]|[+][=]|[/][=]|[*][=]|[=])|" //operador de asignacion
-            + "([a-zA-Z]+[a-zA-Z_0-9]*)|" //identificador
-            + "([\\x22]["+Alfabeto2+"]*[\\x22][#]["+Alfabeto2+"]+[#][\\x22]["+Alfabeto2+"]+[\\x22]|[\\x22]["+Alfabeto2+"]*[\\x22][#]["+Alfabeto2+"]+)|" //Concatenacion
-            + "([\\x22][\\x22])|" //Cadena Vacia
-            + "([*][*]["+Alfabeto+"]+)|" //Comentario Simple
-            + "([{][["+Alfabeto+"]+[\\x0A]*]+[}])|" //Comentario Largo
-            + "([\\x22]["+Alfabeto2+"]+[\\x22])|" //Cadenas
-            + "([#]|[\\x22]|[*][*]|[{]|[}])|" //signos especiales
-            + "(AND|OR)|" //operador logico
-            + "(\\x28|\\x29|\\x5B|\\x5D)|"//signos de agrupacion
-            +"([\\x2B|\\x2D]{0,1}[\\d]+[.][\\d]+|\\d+|[\\x2B|\\x2D]{0,1}[\\x2E]{0,1}[\\d]+)|"//numero
-            + "([-|/|^|+|*])|"//operador aritmetico
-            + "([.|,|;])");//signos de puntuacion
-    String[] tipoDato= {"natural","integer","real","text","bit"};
+
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         // TODO add your handling code here:
         Dimension dim = this.getContentPane().getSize();
         panelPrincipal.setPreferredSize(dim);
     }//GEN-LAST:event_formComponentResized
-
-    private void areaCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_areaCodigoKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_areaCodigoKeyTyped
 
     private void abrirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMouseClicked
         int r = fc.showOpenDialog(this);
@@ -322,7 +289,9 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_guardarMouseClicked
 
     private void compilarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compilarMouseClicked
-        compilar();
+        String [] v = al.compilar(areaCodigo.jTextArea.getText().replaceAll("\t", ""));
+        AreaComponentesL.setText(v[0]);
+        AreaErrores.setText(v[1]);
     }//GEN-LAST:event_compilarMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -346,7 +315,7 @@ public class Interfaz extends javax.swing.JFrame {
         areaCodigo.jTextArea.setText(areaCodigo.jTextArea.getText().replaceAll(cb,nc));
     }//GEN-LAST:event_miBRActionPerformed
 
-    private int obtLinea(String pb){
+    /*private int obtLinea(String pb){
         JTextArea c = areaCodigo.jTextArea;
         for(int i = 0;i <= (c.getText().length()-pb.length()) ;i++){
             if(c.getText().substring(i, i+pb.length()).equals(pb)){
@@ -358,63 +327,9 @@ public class Interfaz extends javax.swing.JFrame {
             }
         }
         return fila;
-    }
-//Metodo compilador mejorado    
-       public void compilar(){
-        String []texto = areaCodigo.jTextArea.getText().split("\n");
-        String w;
-        String stop = "\":=()[],+-*/<>^; ";
-        Pattern p = Pattern.compile(patron);
-        
-        for(int y = 0;y < texto.length; y++){
-            w = "";
-            for(int x = 0;x < texto[y].length(); x++){
-                w += texto[y].substring(x,x+1);
-                if(x < texto[y].length()-1){
-                    if(stop.substring(8,14).contains(w) || stop.substring(1,3).contains(w)){
-                        if(x < texto[y].length()-1){
-                            if(texto[y].substring(x+1,x+2).equals("=")){
-                                w += texto[y].substring(x+1,x+2);
-                                x++;         
-                                showMessageDialog(this,w);
-                                w="";                       
-                            }else if(w.equals(":") && texto[y].substring(x+1,x+2).equals(":")){
-                                w += texto[y].substring(x+1,x+2);
-                                x++;         
-                                showMessageDialog(this,w);
-                                w="";                                
-                            }else if(w.equals("=") && texto[y].substring(x+1,x+2).equals("?")){
-                                w += texto[y].substring(x+1,x+2);
-                                x++;         
-                                showMessageDialog(this,w);
-                                w="";                                
-                            }
-                        }
-                    }else if(stop.contains(texto[y].substring(x+1,x+2))){
-                            showMessageDialog(this,w);
-                            w="";
-                        }
-                }
-                if(stop.contains(w) && !w.equals("")){
-                    if(w.equals("\"")){
-                        for(x++;x<= texto[y].length();x++){
-                            if(x == texto[y].length()){
-                                AreaErrores.setText("Error en la linea #"+(y+1)+". "+"\" perdido.");
-                                break;
-                            }
-                            w += texto[y].substring(x,x+1);
-                            if(texto[y].substring(x,x+1).equals("\"")){
-                                break;
-                            }
-                        }
-                    }
-                   showMessageDialog(this,w);
-                    w="";
-                }
-            }
-        }
-    }
-    
+    } */   
+       
+       
 /*    public void compilar(){
         tablaSimbolos = new Hashtable<>();
         String texto = areaCodigo.jTextArea.getText();
@@ -590,12 +505,12 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
     }
+    AreaCodigo areaCodigo;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AreaComponentesL;
     private javax.swing.JTextArea AreaErrores;
     private javax.swing.JButton abrir;
-    private AreaCodigo areaCodigo;
     private javax.swing.JButton compilar;
     private javax.swing.JButton guardar;
     private javax.swing.JLabel jLabel1;
@@ -607,7 +522,8 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JScrollPane jScrolPane1;
+    private javax.swing.JScrollBar jScrollBar1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenuItem miBR;
