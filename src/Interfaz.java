@@ -359,7 +359,7 @@ public class Interfaz extends javax.swing.JFrame {
         }
         return fila;
     }
-    
+//Metodo compilador mejorado    
        public void compilar(){
         String []texto = areaCodigo.jTextArea.getText().split("\n");
         String w;

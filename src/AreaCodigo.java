@@ -84,15 +84,16 @@ public class AreaCodigo extends javax.swing.JPanel {
            return;
        }
        if(opc > counter){
-        agregarLinea();
+        agregarLinea(opc-counter);
         }
        if(opc < counter){
-        quitarLinea();
+        quitarLinea(counter-opc);
         }
    }
    
    
-    public void agregarLinea(){
+    public void agregarLinea(int n){
+        for(int i = 0; i<n; i++){
         int e = 4+16*counter;
         counter++;
         nl.add(new JLabel(counter+""));
@@ -103,9 +104,11 @@ public class AreaCodigo extends javax.swing.JPanel {
         //showMessageDialog(this,e+"");
         nl.get(counter-1).setBounds(0,e,34,15);
         jPanenum.updateUI();
+        }
     }
     
-    public void quitarLinea(){
+    public void quitarLinea(int n){
+        for(int i = 0; i<n; i++){
         if(counter > 1){
             counter--;
             jPanenum.remove(nl.get(counter));
@@ -113,7 +116,7 @@ public class AreaCodigo extends javax.swing.JPanel {
             jPanenum.updateUI();
             updateUI();
         }
-        
+        }        
     }    
     
     private javax.swing.JPanel jPanenum;
