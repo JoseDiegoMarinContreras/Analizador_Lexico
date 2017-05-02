@@ -13,7 +13,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class ManejadorArchivos {
     String path;
     
-    public void guardar(){
+    public ManejadorArchivos(){
         path = "";
     }
     
@@ -47,6 +47,6 @@ public class ManejadorArchivos {
     }
     
     public void guardar(String contenido) throws IOException{
-        guardarComo(path, contenido);
+        guardarComo(this.path, contenido);
     }
 }
