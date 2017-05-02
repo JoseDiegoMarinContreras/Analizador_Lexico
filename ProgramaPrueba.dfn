@@ -1,0 +1,10 @@
+start
+	integer entero = 10;
+	natural nat = 8;
+	real flotante = 5.9;
+	text cadena = "Calculo Diferencial";
+	bit bool = 1;
+	if(nat::3);
+		nat = 3;
+	
+end

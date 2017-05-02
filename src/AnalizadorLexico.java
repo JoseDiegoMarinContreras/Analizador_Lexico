@@ -68,6 +68,7 @@ public class AnalizadorLexico {
                                         if(dig.contains(texto[y].substring(x,x+1))){
                                             w += texto[y].substring(x,x+1);
                                         }else{
+                                            x--;
                                             break;
                                         }
                                     }
