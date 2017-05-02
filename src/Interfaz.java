@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import static javax.swing.JOptionPane.showInputDialog;
+import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /*
@@ -28,6 +29,10 @@ public class Interfaz extends javax.swing.JFrame {
     Hashtable<String, Simbolo> tablaSimbolos;
     int fila=1;
     int col=1;
+    final String[] tokens ={"<Palabra Reservada, %s>\n", "<Operador Relacional, %s>\n", "<Operador de Asignación, %s>\n",
+                     "<Identificador, %s>\n", "<Concatenación, %s>\n", "<Cadena Vacia, %s>\n", "<Comentario Simple, %s>\n",
+                     "<Comentario Largo, %s>\n", "<Cadena de Texto, %s>\n", "<Función Especial, %s>\n", "<Operador Lógico, %s>\n",
+                     "<Signo de Agrupación, %s>\n", "<Número, %s>\n", "<Operador Aritmetico, %s>\n","<Signo de Puntuación, %s>\n"};
     
     private JFileChooser fc;
     private ManejadorArchivos ma;
@@ -363,7 +368,64 @@ public class Interfaz extends javax.swing.JFrame {
         return fila;
     }
     
-    public void compilar(){
+       public void compilar(){
+        String []texto = areaCodigo.jTextArea.getText().split("\n");
+        String w;
+        String stop = "\":=()[],+-*/<>^; ";
+        Pattern p = Pattern.compile(patron);
+        
+        for(int y = 0;y < texto.length; y++){
+            w = "";
+            for(int x = 0;x < texto[y].length(); x++){
+                w += texto[y].substring(x,x+1);
+                if(x < texto[y].length()-1){
+                    if(stop.substring(8,14).contains(w) || stop.substring(1,3).contains(w)){
+                        if(x < texto[y].length()-1){
+                            if(texto[y].substring(x+1,x+2).equals("=")){
+                                w += texto[y].substring(x+1,x+2);
+                                x++;         
+                                showMessageDialog(this,w);
+                                w="";                       
+                            }else if(w.equals(":") && texto[y].substring(x+1,x+2).equals(":")){
+                                w += texto[y].substring(x+1,x+2);
+                                x++;         
+                                showMessageDialog(this,w);
+                                w="";                                
+                            }else if(w.equals("=") && texto[y].substring(x+1,x+2).equals("?")){
+                                w += texto[y].substring(x+1,x+2);
+                                x++;         
+                                showMessageDialog(this,w);
+                                w="";                                
+                            }
+                        }
+                    }else if(stop.contains(texto[y].substring(x+1,x+2))){
+                            showMessageDialog(this,w);
+                            w="";
+                        }
+                }
+                if(stop.contains(w) && !w.equals("")){
+                    if(w.equals("\"")){
+                        for(x++;x<= texto[y].length();x++){
+                            if(x == texto[y].length()){
+                                AreaErrores.setText("Error en la linea #"+(y+1)+". "+"\" perdido.");
+                                break;
+                            }
+                            w += texto[y].substring(x,x+1);
+                            if(texto[y].substring(x,x+1).equals("\"")){
+                                break;
+                            }
+                        }
+                    }
+                   showMessageDialog(this,w);
+                    w="";
+                }
+            }
+            //showMessageDialog(this,w);
+        }
+            //String tokenTipo1 = matcher.group(1);
+    }
+    
+/*    public void compilar(){
         tablaSimbolos = new Hashtable<>();
         String texto = areaCodigo.jTextArea.getText();
         Simbolo simbolo = new Simbolo();
@@ -502,7 +564,7 @@ public class Interfaz extends javax.swing.JFrame {
                     +"\nFila: "+sim.fila);
         }
         AreaComponentesL.setText(cad);
-    }
+    }*/
     
     
     public void guardar(){
