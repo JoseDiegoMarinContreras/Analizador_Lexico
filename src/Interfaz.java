@@ -8,6 +8,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showInputDialog;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -123,6 +124,9 @@ public class Interfaz extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 abrirMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                abrirMousePressed(evt);
+            }
         });
 
         guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/disquetes-excepto-icono-3849-32.png"))); // NOI18N
@@ -130,12 +134,18 @@ public class Interfaz extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 guardarMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                guardarMousePressed(evt);
+            }
         });
 
         compilar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/clicknrun-icono-4776-32.png"))); // NOI18N
         compilar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 compilarMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                compilarMousePressed(evt);
             }
         });
 
@@ -210,13 +220,29 @@ public class Interfaz extends javax.swing.JFrame {
         });
 
         jMenuItem2.setText("Nuevo");
+        jMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItem2MousePressed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         jMenuItem3.setText("Abrir");
+        jMenuItem3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItem3MousePressed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Guardar");
+        jMenuItem1.setEnabled(false);
+        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItem1MousePressed(evt);
+            }
+        });
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -225,6 +251,11 @@ public class Interfaz extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuItem5.setText("Guardar como...");
+        jMenuItem5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItem5MousePressed(evt);
+            }
+        });
         jMenu1.add(jMenuItem5);
 
         jMenuBar1.add(jMenu1);
@@ -276,34 +307,23 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentResized
 
     private void abrirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMouseClicked
-        int r = fc.showOpenDialog(this);
-        if(r == JFileChooser.APPROVE_OPTION){
-            String path = fc.getSelectedFile().getPath(); 
-            setTitle("Archivo: "+path);
-            try{
-            areaCodigo.jTextArea.setText(ma.abrir(path));
-            }catch(IOException e){
-                e.printStackTrace();
-            }
-        }
+
     }//GEN-LAST:event_abrirMouseClicked
 
     private void guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarMouseClicked
-        guardar();
+        guardarComo();
     }//GEN-LAST:event_guardarMouseClicked
 
     private void compilarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compilarMouseClicked
-        String [] v = al.compilar(areaCodigo.jTextArea.getText().replaceAll("\t", ""));
-        AreaComponentesL.setText(v[0]);
-        AreaErrores.setText(v[1]);
+
     }//GEN-LAST:event_compilarMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        guardar();
+ 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-        guardar();
+        guardarComo();
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void miBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBuscarActionPerformed
@@ -319,6 +339,67 @@ public class Interfaz extends javax.swing.JFrame {
         areaCodigo.jTextArea.setText(areaCodigo.jTextArea.getText().replaceAll(cb,nc));
     }//GEN-LAST:event_miBRActionPerformed
 
+    private void jMenuItem2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MousePressed
+        int opc = javax.swing.JOptionPane.showConfirmDialog(this, "Desea aguardar archivo actual?");
+        if(opc == JOptionPane.OK_OPTION){
+            if(ma.path.equals("")){
+                guardarComo();
+                jMenuItem1.setEnabled(false);
+                return;
+            }
+            jMenuItem1.setEnabled(false);
+            ma.guardar();
+        }
+        if(opc == JOptionPane.CANCEL_OPTION){
+            return;
+        }
+        areaCodigo.jTextArea.setText("");
+    }//GEN-LAST:event_jMenuItem2MousePressed
+
+    private void jMenuItem3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem3MousePressed
+        abrir();
+    }//GEN-LAST:event_jMenuItem3MousePressed
+
+    private void abrirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMousePressed
+        abrir();
+    }//GEN-LAST:event_abrirMousePressed
+
+    private void guardarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarMousePressed
+        if(ma.path.equals("")){
+            guardarComo();
+            return;
+        }
+        ma.guardar();
+    }//GEN-LAST:event_guardarMousePressed
+
+    private void compilarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compilarMousePressed
+        String [] v = al.compilar(areaCodigo.jTextArea.getText().replaceAll("\t", ""));
+        AreaComponentesL.setText(v[0]);
+        AreaErrores.setText(v[1]);
+    }//GEN-LAST:event_compilarMousePressed
+
+    private void jMenuItem1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MousePressed
+        ma.guardar();
+    }//GEN-LAST:event_jMenuItem1MousePressed
+
+    private void jMenuItem5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem5MousePressed
+        guardarComo();
+        jMenuItem1.setEnabled(true);
+    }//GEN-LAST:event_jMenuItem5MousePressed
+
+    public void abrir(){        
+        int r = fc.showOpenDialog(this);
+        if(r == JFileChooser.APPROVE_OPTION){
+            String path = fc.getSelectedFile().getPath(); 
+            setTitle("Archivo: "+path);
+            try{
+            areaCodigo.jTextArea.setText(ma.abrir(path));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }    
+    }
+    
     /*private int obtLinea(String pb){
         JTextArea c = areaCodigo.jTextArea;
         for(int i = 0;i <= (c.getText().length()-pb.length()) ;i++){
@@ -463,13 +544,13 @@ public class Interfaz extends javax.swing.JFrame {
         AreaComponentesL.setText(cad);
     }*/
     
-    public void guardar(){
+    public void guardarComo(){
         int r = fc.showOpenDialog(this);
         if(r == JFileChooser.APPROVE_OPTION){
             String path = fc.getSelectedFile().getPath()+".dfn"; 
             setTitle("Archivo: "+path);
             try{
-                ma.guardar(path, areaCodigo.jTextArea.getText());
+                ma.guardarComo(path, areaCodigo.jTextArea.getText());
             }catch(IOException e){
                 e.printStackTrace();
             }

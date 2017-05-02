@@ -11,12 +11,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class ManejadorArchivos {
+    String path;
     
     public void guardar(){
-    
+        path = "";
     }
     
     public String abrir(String path) throws IOException{
+        this.path = path;
         String temp = "";
         FileReader f = new FileReader(path);
         BufferedReader bf = new BufferedReader(f);
@@ -28,7 +30,8 @@ public class ManejadorArchivos {
         return temp;
     }    
     
-    public void guardar(String path, String contenido) throws IOException{
+    public void guardarComo(String path, String contenido) throws IOException{
+        this.path = path;
         String ar[] = contenido.split("\n");
         File mf = new File(path);
         mf.createNewFile();
@@ -41,5 +44,9 @@ public class ManejadorArchivos {
         bf.flush();
         bf.close();
         f.close();
+    }
+    
+    public void guardar(String contenido) throws IOException{
+        guardarComo(path, contenido);
     }
 }

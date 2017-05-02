@@ -18,11 +18,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Nuevo"/>
               </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenuItem2MousePressed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Abrir"/>
               </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenuItem3MousePressed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
               <Properties>
@@ -30,8 +36,10 @@
                   <KeyStroke key="Ctrl+S"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Guardar"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenuItem1MousePressed"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
               </Events>
             </MenuItem>
@@ -39,6 +47,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Guardar como..."/>
               </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenuItem5MousePressed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -237,6 +248,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="abrirMouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="abrirMousePressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="guardar">
@@ -247,6 +259,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="guardarMouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="guardarMousePressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="compilar">
@@ -257,6 +270,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="compilarMouseClicked"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="compilarMousePressed"/>
           </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane3">
