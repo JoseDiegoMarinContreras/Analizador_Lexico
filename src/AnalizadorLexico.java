@@ -178,11 +178,16 @@ public class AnalizadorLexico {
             if (temp.equals(";")) {//Verificar si el signo de puntuación corresponde con el delimitador de linea
                 if (!tablaSimbolos.containsKey(nombre) && simbolo.tipo!=null && simbolo.valor!=null && simbolo.fila!=0 && !nombre.equals("")) {//Verificamos que la tabla de simbolos no contenga el identificador y verificar que realmente se esta declarando la variable y no modificando
                     tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));//Insertamos en la tabla un nuevo simbolo
+                    nombre = "";
                     simbolo = new Simbolo();//inicializamos la variable simbolo para que este disponible para recibir nuevos valores
                 }else{//En este caso, significa que el identificador ya existe en la tabla de simbolos
                     if (simbolo.tipo==null) {//Verificamos si el identificador que se intenta insertar, se esta declarando o bien si se pretende modificar el valor de éste
-                        tablaSimbolos.get(nombre).valor= simbolo.valor;//Buscamos el identificador en la tabla de simbolos y actualizamos su valor
-                        simbolo =new Simbolo();//Inicializamos la variable simbolo para que este disponible para almacenar nuevo valores para los identificadores
+                        System.out.println("modificando");
+                        if (tablaSimbolos.containsKey(nombre)) {
+                           tablaSimbolos.get(nombre).valor= simbolo.valor;//Buscamos el identificador en la tabla de simbolos y actualizamos su valor
+                            nombre = "";
+                            simbolo =new Simbolo();//Inicializamos la variable simbolo para que este disponible para almacenar nuevo valores para los identificadores
+                        }
                     }else{
                         //Error por identificador duplicado
                         //AreaErrores.setText("Error, en la linea "+simbolo.fila+" Identificador duplicado");
