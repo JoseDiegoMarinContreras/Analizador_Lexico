@@ -1,16 +1,16 @@
 
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 
 
 public class VentanaBuscar extends javax.swing.JDialog {
-    private JTextArea c;
+    private JTextPane c;
     private  int index,indexr;
     /**
      * Creates new form VentanaBuscar
      */
-    public VentanaBuscar(java.awt.Frame parent, boolean modal, JTextArea c) {
+    public VentanaBuscar(java.awt.Frame parent, boolean modal, JTextPane c) {
         super(parent, modal);
         initComponents();
         this.c = c;

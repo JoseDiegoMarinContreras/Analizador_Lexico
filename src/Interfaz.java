@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -33,10 +35,12 @@ public class Interfaz extends javax.swing.JFrame {
     private JFileChooser fc;
     private ManejadorArchivos ma;
     
+    ColorPalabras cp;
+    
     public Interfaz() { 
         al = new AnalizadorLexico();
-        areaCodigo = new AreaCodigo();
-        initComponents();
+        areaCodigo = new AreaCodigo();        
+        initComponents();        
         addWindowListener(new WindowAdapter(){
             @Override
             public void windowClosing(WindowEvent e){
@@ -44,6 +48,7 @@ public class Interfaz extends javax.swing.JFrame {
             }   
         });
         jScrollPane1.setViewportView(areaCodigo);
+        cp= new ColorPalabras(areaCodigo.jTextArea);
         update(fila, col);
         fc = new JFileChooser(new File(".").getAbsolutePath());
         fc.setFileFilter(new FileNameExtensionFilter("*.DFN","dfn"));
@@ -55,7 +60,7 @@ public class Interfaz extends javax.swing.JFrame {
         compilar.setToolTipText("Compilar");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 //        areaCodigo.setPreferredSize(new Dimension(this.getSize().width, this.getSize().height/2));
-        areaCodigo.jTextArea.addCaretListener(new CaretListener(){
+        /*areaCodigo.jTextArea.addCaretListener(new CaretListener(){
             @Override
             public void caretUpdate(CaretEvent ce) {
                 JTextArea codigo = (JTextArea)ce.getSource();
@@ -67,9 +72,28 @@ public class Interfaz extends javax.swing.JFrame {
                 }catch(Exception e){}
                 update(fila, col);
             }
-        });
+        });*/
         panelPrincipal.setBackground(Color.LIGHT_GRAY);
         areaCodigo.jTextArea.requestFocus();
+        areaCodigo.jTextArea.addKeyListener(new KeyListener(){
+            public void keyTyped(KeyEvent e){
+
+            }
+
+            public void keyPressed(KeyEvent evt){
+                if(evt.getKeyCode()==evt.VK_BACK_SPACE){
+                cp.released();
+                }
+            }
+
+            public void keyReleased(KeyEvent evt){
+                if(evt.VK_D==evt.getKeyCode()||evt.VK_E==evt.getKeyCode()||evt.VK_F==evt.getKeyCode()||evt.VK_G==evt.getKeyCode()
+                ||evt.VK_I==evt.getKeyCode()||evt.VK_L==evt.getKeyCode()||evt.VK_M==evt.getKeyCode()||evt.VK_N==evt.getKeyCode()
+                ||evt.VK_O==evt.getKeyCode()||evt.VK_R==evt.getKeyCode()||evt.VK_T==evt.getKeyCode()||evt.VK_Y==evt.getKeyCode()){                    
+                    cp.pressed();                    
+                }
+            }
+        }); 
     }
     private void update(int fil, int co){
         numFilas.setText(fil+"");
@@ -188,6 +212,15 @@ public class Interfaz extends javax.swing.JFrame {
         AreaComponentesL.setColumns(20);
         AreaComponentesL.setRows(5);
         jScrollPane3.setViewportView(AreaComponentesL);
+
+        jScrollPane1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jScrollPane1KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jScrollPane1KeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
@@ -477,7 +510,19 @@ public class Interfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tablaSimActionPerformed
 
-    public void abrir(){        
+    private void jScrollPane1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jScrollPane1KeyPressed
+        
+    }//GEN-LAST:event_jScrollPane1KeyPressed
+
+    private void jScrollPane1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jScrollPane1KeyReleased
+        
+    }//GEN-LAST:event_jScrollPane1KeyReleased
+    
+    public void listener(){
+                       
+    }            
+    
+    public void abrir(){                
         int r = fc.showOpenDialog(this);
         if(r == JFileChooser.APPROVE_OPTION){
             String path = fc.getSelectedFile().getPath(); 
