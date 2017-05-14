@@ -1,5 +1,5 @@
 
-import java.util.Enumeration;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
  * @author IVAN
  */
 public class AnalizadorLexico {
+    ArrayList<Token> Tokens= new ArrayList<>();//ArrayList que almacena los tokens del programa
     Hashtable<String, Simbolo> tablaSimbolos;
     String Alfabeto=("[\\w]*[\\x09]*[\\x20]+[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x23]*[\\x3F]*[\\x23]*[\\x22]*[\\x2E]*[\\x20]+");
     String Alfabeto2=("[\\w]*[\\x09]*[\\x20]*[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x3F]*[\\xF9]*[\\x2E]*");
@@ -158,13 +159,13 @@ public class AnalizadorLexico {
         }
         Pattern p = Pattern.compile(patron);
         Matcher matcher = p.matcher(temp);
-        String r = null;
+        String r = "";
         int c = 0;
         //Ciclo while para que encuentre todas las coincidencias, y la que tenga mas caracteres sera la mas probable
         while(matcher.find()){
             for (int i =1; i <= tokens.length;i++) {
                 if(matcher.group(i) != null){
-                    if(r == null){
+                    if(r == ""){
                         r = matcher.group(i);
                         c=i-1;
                     }
@@ -175,6 +176,8 @@ public class AnalizadorLexico {
                         tabla(i, temp, l); // Enviar los datos para realizar la inserción en la tabla de simbolos
                         re[0] += tokens[i-1];
                         re[0] = re[0].replace("%s", temp);
+                        //Agregamos los tokens al arraylist, en el formato componente lexico y lexema
+                        Tokens.add(new Token(tokens[i-1].split(",")[0].substring(1), temp));
                         return;
                     }
                 }

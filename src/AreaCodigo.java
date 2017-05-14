@@ -2,8 +2,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JLabel;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 
 
 public class AreaCodigo extends javax.swing.JPanel {
@@ -29,7 +27,7 @@ public class AreaCodigo extends javax.swing.JPanel {
         jPanenum.setLayout(null);
         jPanenum.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
                 public void mouseMoved(java.awt.event.MouseEvent evt){
-                    System.out.println(evt.getX()+", "+evt.getY()+"\n");
+                    //System.out.println(evt.getX()+", "+evt.getY()+"\n");
                 }
         });
         
@@ -37,6 +35,8 @@ public class AreaCodigo extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());        
         //jTextArea.setColumns(20);
         //jTextArea.setRows(5);
+        
+        
                
         add(jTextArea, java.awt.BorderLayout.CENTER);
         //jPanel1.add(jPanenum, java.awt.BorderLayout.LINE_START);

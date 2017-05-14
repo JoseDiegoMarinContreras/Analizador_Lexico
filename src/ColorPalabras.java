@@ -102,7 +102,7 @@ public class ColorPalabras {
             //JOptionPane.showMessageDialog(null, cad);
             for(int k=0;k<keyWords.length;k++) {                
                 if(keyWords[k].equals(cad)){
-                    JOptionPane.showMessageDialog(null, cad+"  |  "+keyWords[k]);  
+                    //JOptionPane.showMessageDialog(null, cad+"  |  "+keyWords[k]);  
                     StyleConstants.setForeground(styleN, Color.black);
                     doc.setCharacterAttributes((p-i)+1, p+j, styleN, true);
                     f= 1;

@@ -4,18 +4,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showInputDialog;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.jw.menage.ui.components.TextLineNumber;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -31,6 +27,7 @@ public class Interfaz extends javax.swing.JFrame {
     int fila=1;
     int col=1;
     AnalizadorLexico al;
+    TextLineNumber tln;
     
     private JFileChooser fc;
     private ManejadorArchivos ma;
@@ -39,14 +36,16 @@ public class Interfaz extends javax.swing.JFrame {
     
     public Interfaz() { 
         al = new AnalizadorLexico();
-        areaCodigo = new AreaCodigo();        
-        initComponents();        
+        areaCodigo = new AreaCodigo();  
+        tln = new TextLineNumber(areaCodigo.jTextArea);     
+        initComponents();
         addWindowListener(new WindowAdapter(){
             @Override
             public void windowClosing(WindowEvent e){
                 windowClosingEvent(e);
             }   
         });
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         jScrollPane1.setViewportView(areaCodigo);
         cp= new ColorPalabras(areaCodigo.jTextArea);
         update(fila, col);
@@ -59,30 +58,16 @@ public class Interfaz extends javax.swing.JFrame {
         guardar.setToolTipText("Guardar");
         compilar.setToolTipText("Compilar");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        areaCodigo.setPreferredSize(new Dimension(this.getSize().width, this.getSize().height/2));
-        /*areaCodigo.jTextArea.addCaretListener(new CaretListener(){
-            @Override
-            public void caretUpdate(CaretEvent ce) {
-                JTextArea codigo = (JTextArea)ce.getSource();
-                try{
-                    int pos =codigo.getCaretPosition();
-                    fila=codigo.getLineOfOffset(pos);
-                    col = pos-codigo.getLineStartOffset(fila)+1;
-                    fila++;
-                }catch(Exception e){}
-                update(fila, col);
-            }
-        });*/
         panelPrincipal.setBackground(Color.LIGHT_GRAY);
         areaCodigo.jTextArea.requestFocus();
         areaCodigo.jTextArea.addKeyListener(new KeyListener(){
-            public void keyTyped(KeyEvent e){
-
+            public void keyTyped(KeyEvent e){                
+                
             }
 
             public void keyPressed(KeyEvent evt){
                 if(evt.getKeyCode()==evt.VK_BACK_SPACE){
-                cp.released();
+                    cp.released();
                 }
             }
 
@@ -455,6 +440,9 @@ public class Interfaz extends javax.swing.JFrame {
                 err.printStackTrace();
             }
         }
+        if (opc == JOptionPane.NO_OPTION) {
+            System.exit(0);
+        }
     }
     
     private void jMenuItem3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem3MousePressed
@@ -503,7 +491,7 @@ public class Interfaz extends javax.swing.JFrame {
                 javax.swing.JOptionPane.showMessageDialog(this,"La tabla de símbolos esta vacia");
             }else{
                 TablaSimbolos tabla = new TablaSimbolos(al.tablaSimbolos);
-                tabla.setVisible(true);//Mostramos los identificadores existentes en la tabla de simbolos
+                tabla.setVisible(true);//Mostramos la tabla de simbolos
             }
         }catch(Exception e){
             javax.swing.JOptionPane.showMessageDialog(this,"La tabla de símbolos no ha sido creada");
