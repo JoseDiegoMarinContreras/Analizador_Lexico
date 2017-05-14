@@ -469,6 +469,7 @@ public class Interfaz extends javax.swing.JFrame {
         String [] v = al.compilar(areaCodigo.jTextArea.getText().replaceAll("\t", ""));
         AreaComponentesL.setText(v[0]);
         AreaErrores.setText(v[1]);
+        AnalizadorSintactico alSinc = new AnalizadorSintactico(al);
     }//GEN-LAST:event_compilarMousePressed
 
     private void jMenuItem1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MousePressed
