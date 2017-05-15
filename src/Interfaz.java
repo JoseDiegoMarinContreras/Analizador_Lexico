@@ -28,7 +28,7 @@ public class Interfaz extends javax.swing.JFrame {
     int col=1;
     AnalizadorLexico al;
     TextLineNumber tln;
-    
+    private boolean guardado= false; 
     private JFileChooser fc;
     private ManejadorArchivos ma;
     
@@ -68,6 +68,7 @@ public class Interfaz extends javax.swing.JFrame {
             public void keyPressed(KeyEvent evt){
                 if(evt.getKeyCode()==evt.VK_BACK_SPACE){
                     cp.released();
+                    guardado=false;
                 }
             }
 
@@ -77,6 +78,7 @@ public class Interfaz extends javax.swing.JFrame {
                 ||evt.VK_O==evt.getKeyCode()||evt.VK_R==evt.getKeyCode()||evt.VK_T==evt.getKeyCode()||evt.VK_Y==evt.getKeyCode()){                    
                     cp.pressed();                    
                 }
+                guardado=false;
             }
         }); 
     }
@@ -118,10 +120,10 @@ public class Interfaz extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        nuevoDoc = new javax.swing.JMenuItem();
+        abrirDoc = new javax.swing.JMenuItem();
+        guardarDoc = new javax.swing.JMenuItem();
+        guardarComo = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         miBuscar = new javax.swing.JMenuItem();
         miBR = new javax.swing.JMenuItem();
@@ -272,44 +274,46 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem2.setText("Nuevo");
-        jMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
+        nuevoDoc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        nuevoDoc.setText("Nuevo");
+        nuevoDoc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItem2MousePressed(evt);
+                nuevoDocMousePressed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenu1.add(nuevoDoc);
 
-        jMenuItem3.setText("Abrir");
-        jMenuItem3.addMouseListener(new java.awt.event.MouseAdapter() {
+        abrirDoc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        abrirDoc.setText("Abrir");
+        abrirDoc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItem3MousePressed(evt);
+                abrirDocMousePressed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
+        jMenu1.add(abrirDoc);
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Guardar");
-        jMenuItem1.setEnabled(false);
-        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+        guardarDoc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        guardarDoc.setText("Guardar");
+        guardarDoc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItem1MousePressed(evt);
+                guardarDocMousePressed(evt);
             }
         });
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        guardarDoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                guardarDocActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(guardarDoc);
 
-        jMenuItem5.setText("Guardar como...");
-        jMenuItem5.addMouseListener(new java.awt.event.MouseAdapter() {
+        guardarComo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        guardarComo.setText("Guardar como...");
+        guardarComo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jMenuItem5MousePressed(evt);
+                guardarComoMousePressed(evt);
             }
         });
-        jMenu1.add(jMenuItem5);
+        jMenu1.add(guardarComo);
 
         jMenuBar1.add(jMenu1);
 
@@ -383,12 +387,13 @@ public class Interfaz extends javax.swing.JFrame {
 
     }//GEN-LAST:event_compilarMouseClicked
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void guardarDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarDocActionPerformed
  
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_guardarDocActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-        guardarComo();
+        //guardarComo();
+        //guardado = true;
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void miBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBuscarActionPerformed
@@ -404,62 +409,75 @@ public class Interfaz extends javax.swing.JFrame {
         areaCodigo.jTextArea.setText(areaCodigo.jTextArea.getText().replaceAll(cb,nc));
     }//GEN-LAST:event_miBRActionPerformed
 
-    private void jMenuItem2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MousePressed
-        int opc = javax.swing.JOptionPane.showConfirmDialog(this, "Desea aguardar archivo actual?");
-        if(opc == JOptionPane.OK_OPTION){
-            if(ma.path.equals("")){
-                guardarComo();
-                jMenuItem1.setEnabled(false);
+    private void nuevoDocMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevoDocMousePressed
+        if (!guardado) {
+            int opc = javax.swing.JOptionPane.showConfirmDialog(this, "Desea guardar archivo actual?");
+            if(opc == JOptionPane.OK_OPTION){
+                if(ma.path.equals("")){
+                    guardarComo();
+                    guardarDoc.setEnabled(false);
+                    return;
+                }
+                guardarDoc.setEnabled(false);
+                try{
+                    ma.guardar(areaCodigo.jTextArea.getText());
+                }catch(IOException err){
+                    err.printStackTrace();
+                }
+            }
+            if(opc == JOptionPane.CANCEL_OPTION){
                 return;
             }
-            jMenuItem1.setEnabled(false);
-            try{
-                ma.guardar(areaCodigo.jTextArea.getText());
-            }catch(IOException err){
-                err.printStackTrace();
-            }
         }
-        if(opc == JOptionPane.CANCEL_OPTION){
-            return;
-        }
+        guardado=false;
         areaCodigo.jTextArea.setText("");
-    }//GEN-LAST:event_jMenuItem2MousePressed
+        ma.path="";        
+    }//GEN-LAST:event_nuevoDocMousePressed
 
     private void windowClosingEvent(WindowEvent e){
-        int opc = javax.swing.JOptionPane.showConfirmDialog(this, "Desea aguardar archivo actual?");
-        if(opc == JOptionPane.OK_OPTION){
-            if(ma.path.equals("")){
-                guardarComo();
-                jMenuItem1.setEnabled(false);
-                return;
+        if (!guardado) {
+            int opc = javax.swing.JOptionPane.showConfirmDialog(this, "Desea aguardar archivo actual?");
+            if(opc == JOptionPane.OK_OPTION){
+                if(ma.path.equals("")){
+                    guardarComo();
+                    guardarDoc.setEnabled(false);
+                    return;
+                }
+                guardarDoc.setEnabled(false);
+                try{
+                    ma.guardar(areaCodigo.jTextArea.getText());
+                }catch(IOException err){
+                    err.printStackTrace();
+                }
+                System.exit(0);
             }
-            jMenuItem1.setEnabled(false);
-            try{
-                ma.guardar(areaCodigo.jTextArea.getText());
-            }catch(IOException err){
-                err.printStackTrace();
+            if (opc == JOptionPane.NO_OPTION) {
+                System.exit(0);
             }
-        }
-        if (opc == JOptionPane.NO_OPTION) {
+        }else{
             System.exit(0);
         }
     }
     
-    private void jMenuItem3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem3MousePressed
+    private void abrirDocMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirDocMousePressed
         abrir();
-    }//GEN-LAST:event_jMenuItem3MousePressed
+        guardado=true;
+    }//GEN-LAST:event_abrirDocMousePressed
 
     private void abrirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMousePressed
         abrir();
+        guardado=true;
     }//GEN-LAST:event_abrirMousePressed
 
     private void guardarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarMousePressed
         if(ma.path.equals("")){
             guardarComo();
+            guardado=true;
             return;
         }
         try{
             ma.guardar(areaCodigo.jTextArea.getText());
+            guardado=true;
         }catch(IOException err){
             err.printStackTrace();
         }
@@ -472,18 +490,14 @@ public class Interfaz extends javax.swing.JFrame {
         AnalizadorSintactico alSinc = new AnalizadorSintactico(al);
     }//GEN-LAST:event_compilarMousePressed
 
-    private void jMenuItem1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MousePressed
-        try{
-            ma.guardar(areaCodigo.jTextArea.getText());
-        }catch(IOException err){
-            err.printStackTrace();
-        }
-    }//GEN-LAST:event_jMenuItem1MousePressed
+    private void guardarDocMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarDocMousePressed
+        guardarMousePressed(null);
+    }//GEN-LAST:event_guardarDocMousePressed
 
-    private void jMenuItem5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem5MousePressed
+    private void guardarComoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarComoMousePressed
         guardarComo();
-        jMenuItem1.setEnabled(true);
-    }//GEN-LAST:event_jMenuItem5MousePressed
+        guardado=true;
+    }//GEN-LAST:event_guardarComoMousePressed
 
     private void tablaSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tablaSimActionPerformed
         // TODO add your handling code here:
@@ -506,11 +520,7 @@ public class Interfaz extends javax.swing.JFrame {
     private void jScrollPane1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jScrollPane1KeyReleased
         
     }//GEN-LAST:event_jScrollPane1KeyReleased
-    
-    public void listener(){
-                       
-    }            
-    
+
     public void abrir(){                
         int r = fc.showOpenDialog(this);
         if(r == JFileChooser.APPROVE_OPTION){
@@ -576,8 +586,11 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JTextArea AreaComponentesL;
     private javax.swing.JTextArea AreaErrores;
     private javax.swing.JButton abrir;
+    private javax.swing.JMenuItem abrirDoc;
     private javax.swing.JButton compilar;
     private javax.swing.JButton guardar;
+    private javax.swing.JMenuItem guardarComo;
+    private javax.swing.JMenuItem guardarDoc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
@@ -592,16 +605,13 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuBar jMenuBar3;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenuItem miBR;
     private javax.swing.JMenuItem miBuscar;
+    private javax.swing.JMenuItem nuevoDoc;
     private javax.swing.JLabel numCol;
     private javax.swing.JLabel numFilas;
     private javax.swing.JPanel panelPrincipal;
