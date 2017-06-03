@@ -1,5 +1,4 @@
 
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -210,7 +209,7 @@ public class AnalizadorLexico {
         }
         if(i == 15) {//Verificar si el grupo corresponde a un signo de puntuación
             if (temp.equals(";")) {//Verificar si el signo de puntuación corresponde con el delimitador de linea
-                if (!tablaSimbolos.containsKey(nombre) && simbolo.tipo!=null && simbolo.valor!=null && simbolo.fila!=0 && !nombre.equals("")) {//Verificamos que la tabla de simbolos no contenga el identificador y verificar que realmente se esta declarando la variable y no modificando
+                if (!tablaSimbolos.containsKey(nombre) && simbolo.tipo!=null && simbolo.fila!=0 && !nombre.equals("")) {//Verificamos que la tabla de simbolos no contenga el identificador y verificar que realmente se esta declarando la variable y no modificando
                     tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));//Insertamos en la tabla un nuevo simbolo
                     nombre = "";
                     simbolo = new Simbolo();//inicializamos la variable simbolo para que este disponible para recibir nuevos valores
