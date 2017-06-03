@@ -2,6 +2,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JLabel;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 
 public class AreaCodigo extends javax.swing.JPanel {
@@ -11,32 +13,31 @@ public class AreaCodigo extends javax.swing.JPanel {
     private Font formato;
         
     public AreaCodigo() {
-        jTextArea = new javax.swing.JTextPane();
+        jTextArea = new javax.swing.JTextArea();
         jPanenum = new javax.swing.JPanel();
         
         initComponents();      
         
-        /*jTextArea.addCaretListener(new CaretListener(){
+        jTextArea.addCaretListener(new CaretListener(){
             public void caretUpdate(CaretEvent e ) {
                 actNoLinea(e);
                 }
             }
-        );*/
+        );
         //----------------------------------------------------------------------
         jPanenum.setPreferredSize(new Dimension(40, 100));
         jPanenum.setLayout(null);
-        jPanenum.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+        /*jPanenum.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
                 public void mouseMoved(java.awt.event.MouseEvent evt){
-                    //System.out.println(evt.getX()+", "+evt.getY()+"\n");
+                    System.out.println(evt.getX()+", "+evt.getY()+"\n");
                 }
-        });
+        });*/
         
 
-        setLayout(new java.awt.BorderLayout());        
-        //jTextArea.setColumns(20);
-        //jTextArea.setRows(5);
-        
-        
+        setLayout(new java.awt.BorderLayout());
+
+        jTextArea.setColumns(20);
+        jTextArea.setRows(5);
                
         add(jTextArea, java.awt.BorderLayout.CENTER);
         //jPanel1.add(jPanenum, java.awt.BorderLayout.LINE_START);
@@ -76,7 +77,7 @@ public class AreaCodigo extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );        
     }// </editor-fold>//GEN-END:initComponents
-    /*private void actNoLinea(CaretEvent e){
+    private void actNoLinea(CaretEvent e){
        int opc = jTextArea.getLineCount();
        if(opc  == counter){
            return;
@@ -87,10 +88,10 @@ public class AreaCodigo extends javax.swing.JPanel {
        if(opc < counter){
         quitarLinea(counter-opc);
         }
-   }*/
+   }
    
    
-    /*public void agregarLinea(int n){
+    public void agregarLinea(int n){
         for(int i = 0; i<n; i++){
         int e = 4+16*counter;
         counter++;
@@ -103,9 +104,9 @@ public class AreaCodigo extends javax.swing.JPanel {
         nl.get(counter-1).setBounds(0,e,34,15);
         jPanenum.updateUI();
         }
-    }*/
+    }
     
-    /*public void quitarLinea(int n){
+    public void quitarLinea(int n){
         for(int i = 0; i<n; i++){
         if(counter > 1){
             counter--;
@@ -115,10 +116,10 @@ public class AreaCodigo extends javax.swing.JPanel {
             updateUI();
         }
         }        
-    }*/   
+    }    
     
     private javax.swing.JPanel jPanenum;
-    public javax.swing.JTextPane jTextArea;
+    public javax.swing.JTextArea jTextArea;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

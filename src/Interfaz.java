@@ -1,17 +1,19 @@
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showInputDialog;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.jw.menage.ui.components.TextLineNumber;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -27,17 +29,13 @@ public class Interfaz extends javax.swing.JFrame {
     int fila=1;
     int col=1;
     AnalizadorLexico al;
-    TextLineNumber tln;
-    private boolean guardado= false; 
+    
     private JFileChooser fc;
     private ManejadorArchivos ma;
     
-    ColorPalabras cp;
-    
     public Interfaz() { 
         al = new AnalizadorLexico();
-        areaCodigo = new AreaCodigo();  
-        tln = new TextLineNumber(areaCodigo.jTextArea);     
+        areaCodigo = new AreaCodigo();
         initComponents();
         addWindowListener(new WindowAdapter(){
             @Override
@@ -45,9 +43,7 @@ public class Interfaz extends javax.swing.JFrame {
                 windowClosingEvent(e);
             }   
         });
-        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         jScrollPane1.setViewportView(areaCodigo);
-        cp= new ColorPalabras(areaCodigo.jTextArea);
         update(fila, col);
         fc = new JFileChooser(new File(".").getAbsolutePath());
         fc.setFileFilter(new FileNameExtensionFilter("*.DFN","dfn"));
@@ -58,29 +54,22 @@ public class Interfaz extends javax.swing.JFrame {
         guardar.setToolTipText("Guardar");
         compilar.setToolTipText("Compilar");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        areaCodigo.setPreferredSize(new Dimension(this.getSize().width, this.getSize().height/2));
+        areaCodigo.jTextArea.addCaretListener(new CaretListener(){
+            @Override
+            public void caretUpdate(CaretEvent ce) {
+                JTextArea codigo = (JTextArea)ce.getSource();
+                try{
+                    int pos =codigo.getCaretPosition();
+                    fila=codigo.getLineOfOffset(pos);
+                    col = pos-codigo.getLineStartOffset(fila)+1;
+                    fila++;
+                }catch(Exception e){}
+                update(fila, col);
+            }
+        });
         panelPrincipal.setBackground(Color.LIGHT_GRAY);
         areaCodigo.jTextArea.requestFocus();
-        areaCodigo.jTextArea.addKeyListener(new KeyListener(){
-            public void keyTyped(KeyEvent e){                
-                
-            }
-
-            public void keyPressed(KeyEvent evt){
-                if(evt.getKeyCode()==evt.VK_BACK_SPACE){
-                    cp.released();
-                    guardado=false;
-                }
-            }
-
-            public void keyReleased(KeyEvent evt){
-                if(evt.VK_D==evt.getKeyCode()||evt.VK_E==evt.getKeyCode()||evt.VK_F==evt.getKeyCode()||evt.VK_G==evt.getKeyCode()
-                ||evt.VK_I==evt.getKeyCode()||evt.VK_L==evt.getKeyCode()||evt.VK_M==evt.getKeyCode()||evt.VK_N==evt.getKeyCode()
-                ||evt.VK_O==evt.getKeyCode()||evt.VK_R==evt.getKeyCode()||evt.VK_T==evt.getKeyCode()||evt.VK_Y==evt.getKeyCode()){                    
-                    cp.pressed();                    
-                }
-                guardado=false;
-            }
-        }); 
     }
     private void update(int fil, int co){
         numFilas.setText(fil+"");
@@ -120,10 +109,10 @@ public class Interfaz extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        nuevoDoc = new javax.swing.JMenuItem();
-        abrirDoc = new javax.swing.JMenuItem();
-        guardarDoc = new javax.swing.JMenuItem();
-        guardarComo = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         miBuscar = new javax.swing.JMenuItem();
         miBR = new javax.swing.JMenuItem();
@@ -200,15 +189,6 @@ public class Interfaz extends javax.swing.JFrame {
         AreaComponentesL.setRows(5);
         jScrollPane3.setViewportView(AreaComponentesL);
 
-        jScrollPane1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jScrollPane1KeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jScrollPane1KeyReleased(evt);
-            }
-        });
-
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
@@ -274,46 +254,44 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
-        nuevoDoc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        nuevoDoc.setText("Nuevo");
-        nuevoDoc.addMouseListener(new java.awt.event.MouseAdapter() {
+        jMenuItem2.setText("Nuevo");
+        jMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                nuevoDocMousePressed(evt);
+                jMenuItem2MousePressed(evt);
             }
         });
-        jMenu1.add(nuevoDoc);
+        jMenu1.add(jMenuItem2);
 
-        abrirDoc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        abrirDoc.setText("Abrir");
-        abrirDoc.addMouseListener(new java.awt.event.MouseAdapter() {
+        jMenuItem3.setText("Abrir");
+        jMenuItem3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                abrirDocMousePressed(evt);
+                jMenuItem3MousePressed(evt);
             }
         });
-        jMenu1.add(abrirDoc);
+        jMenu1.add(jMenuItem3);
 
-        guardarDoc.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        guardarDoc.setText("Guardar");
-        guardarDoc.addMouseListener(new java.awt.event.MouseAdapter() {
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Guardar");
+        jMenuItem1.setEnabled(false);
+        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                guardarDocMousePressed(evt);
+                jMenuItem1MousePressed(evt);
             }
         });
-        guardarDoc.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                guardarDocActionPerformed(evt);
+                jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(guardarDoc);
+        jMenu1.add(jMenuItem1);
 
-        guardarComo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        guardarComo.setText("Guardar como...");
-        guardarComo.addMouseListener(new java.awt.event.MouseAdapter() {
+        jMenuItem5.setText("Guardar como...");
+        jMenuItem5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                guardarComoMousePressed(evt);
+                jMenuItem5MousePressed(evt);
             }
         });
-        jMenu1.add(guardarComo);
+        jMenu1.add(jMenuItem5);
 
         jMenuBar1.add(jMenu1);
 
@@ -387,13 +365,12 @@ public class Interfaz extends javax.swing.JFrame {
 
     }//GEN-LAST:event_compilarMouseClicked
 
-    private void guardarDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarDocActionPerformed
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
  
-    }//GEN-LAST:event_guardarDocActionPerformed
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-        //guardarComo();
-        //guardado = true;
+        guardarComo();
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void miBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBuscarActionPerformed
@@ -409,75 +386,59 @@ public class Interfaz extends javax.swing.JFrame {
         areaCodigo.jTextArea.setText(areaCodigo.jTextArea.getText().replaceAll(cb,nc));
     }//GEN-LAST:event_miBRActionPerformed
 
-    private void nuevoDocMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nuevoDocMousePressed
-        if (!guardado) {
-            int opc = javax.swing.JOptionPane.showConfirmDialog(this, "Desea guardar archivo actual?");
-            if(opc == JOptionPane.OK_OPTION){
-                if(ma.path.equals("")){
-                    guardarComo();
-                    guardarDoc.setEnabled(false);
-                    return;
-                }
-                guardarDoc.setEnabled(false);
-                try{
-                    ma.guardar(areaCodigo.jTextArea.getText());
-                }catch(IOException err){
-                    err.printStackTrace();
-                }
-            }
-            if(opc == JOptionPane.CANCEL_OPTION){
+    private void jMenuItem2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MousePressed
+        int opc = javax.swing.JOptionPane.showConfirmDialog(this, "Desea aguardar archivo actual?");
+        if(opc == JOptionPane.OK_OPTION){
+            if(ma.path.equals("")){
+                guardarComo();
+                jMenuItem1.setEnabled(false);
                 return;
             }
+            jMenuItem1.setEnabled(false);
+            try{
+                ma.guardar(areaCodigo.jTextArea.getText());
+            }catch(IOException err){
+                err.printStackTrace();
+            }
         }
-        guardado=false;
+        if(opc == JOptionPane.CANCEL_OPTION){
+            return;
+        }
         areaCodigo.jTextArea.setText("");
-        ma.path="";        
-    }//GEN-LAST:event_nuevoDocMousePressed
+    }//GEN-LAST:event_jMenuItem2MousePressed
 
     private void windowClosingEvent(WindowEvent e){
-        if (!guardado) {
-            int opc = javax.swing.JOptionPane.showConfirmDialog(this, "Desea aguardar archivo actual?");
-            if(opc == JOptionPane.OK_OPTION){
-                if(ma.path.equals("")){
-                    guardarComo();
-                    guardarDoc.setEnabled(false);
-                    return;
-                }
-                guardarDoc.setEnabled(false);
-                try{
-                    ma.guardar(areaCodigo.jTextArea.getText());
-                }catch(IOException err){
-                    err.printStackTrace();
-                }
-                System.exit(0);
+        int opc = javax.swing.JOptionPane.showConfirmDialog(this, "Desea aguardar archivo actual?");
+        if(opc == JOptionPane.OK_OPTION){
+            if(ma.path.equals("")){
+                guardarComo();
+                jMenuItem1.setEnabled(false);
+                return;
             }
-            if (opc == JOptionPane.NO_OPTION) {
-                System.exit(0);
+            jMenuItem1.setEnabled(false);
+            try{
+                ma.guardar(areaCodigo.jTextArea.getText());
+            }catch(IOException err){
+                err.printStackTrace();
             }
-        }else{
-            System.exit(0);
         }
     }
     
-    private void abrirDocMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirDocMousePressed
+    private void jMenuItem3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem3MousePressed
         abrir();
-        guardado=true;
-    }//GEN-LAST:event_abrirDocMousePressed
+    }//GEN-LAST:event_jMenuItem3MousePressed
 
     private void abrirMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMousePressed
         abrir();
-        guardado=true;
     }//GEN-LAST:event_abrirMousePressed
 
     private void guardarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarMousePressed
         if(ma.path.equals("")){
             guardarComo();
-            guardado=true;
             return;
         }
         try{
             ma.guardar(areaCodigo.jTextArea.getText());
-            guardado=true;
         }catch(IOException err){
             err.printStackTrace();
         }
@@ -487,17 +448,20 @@ public class Interfaz extends javax.swing.JFrame {
         String [] v = al.compilar(areaCodigo.jTextArea.getText().replaceAll("\t", ""));
         AreaComponentesL.setText(v[0]);
         AreaErrores.setText(v[1]);
-        AnalizadorSintactico alSinc = new AnalizadorSintactico(al);
     }//GEN-LAST:event_compilarMousePressed
 
-    private void guardarDocMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarDocMousePressed
-        guardarMousePressed(null);
-    }//GEN-LAST:event_guardarDocMousePressed
+    private void jMenuItem1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MousePressed
+        try{
+            ma.guardar(areaCodigo.jTextArea.getText());
+        }catch(IOException err){
+            err.printStackTrace();
+        }
+    }//GEN-LAST:event_jMenuItem1MousePressed
 
-    private void guardarComoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarComoMousePressed
+    private void jMenuItem5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem5MousePressed
         guardarComo();
-        guardado=true;
-    }//GEN-LAST:event_guardarComoMousePressed
+        jMenuItem1.setEnabled(true);
+    }//GEN-LAST:event_jMenuItem5MousePressed
 
     private void tablaSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tablaSimActionPerformed
         // TODO add your handling code here:
@@ -506,22 +470,14 @@ public class Interfaz extends javax.swing.JFrame {
                 javax.swing.JOptionPane.showMessageDialog(this,"La tabla de símbolos esta vacia");
             }else{
                 TablaSimbolos tabla = new TablaSimbolos(al.tablaSimbolos);
-                tabla.setVisible(true);//Mostramos la tabla de simbolos
+                tabla.setVisible(true);//Mostramos los identificadores existentes en la tabla de simbolos
             }
         }catch(Exception e){
             javax.swing.JOptionPane.showMessageDialog(this,"La tabla de símbolos no ha sido creada");
         }
     }//GEN-LAST:event_tablaSimActionPerformed
 
-    private void jScrollPane1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jScrollPane1KeyPressed
-        
-    }//GEN-LAST:event_jScrollPane1KeyPressed
-
-    private void jScrollPane1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jScrollPane1KeyReleased
-        
-    }//GEN-LAST:event_jScrollPane1KeyReleased
-
-    public void abrir(){                
+    public void abrir(){        
         int r = fc.showOpenDialog(this);
         if(r == JFileChooser.APPROVE_OPTION){
             String path = fc.getSelectedFile().getPath(); 
@@ -586,11 +542,8 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JTextArea AreaComponentesL;
     private javax.swing.JTextArea AreaErrores;
     private javax.swing.JButton abrir;
-    private javax.swing.JMenuItem abrirDoc;
     private javax.swing.JButton compilar;
     private javax.swing.JButton guardar;
-    private javax.swing.JMenuItem guardarComo;
-    private javax.swing.JMenuItem guardarDoc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
@@ -605,13 +558,16 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuBar jMenuBar3;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenuItem miBR;
     private javax.swing.JMenuItem miBuscar;
-    private javax.swing.JMenuItem nuevoDoc;
     private javax.swing.JLabel numCol;
     private javax.swing.JLabel numFilas;
     private javax.swing.JPanel panelPrincipal;
