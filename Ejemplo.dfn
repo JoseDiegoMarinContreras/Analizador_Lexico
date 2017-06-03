@@ -1,0 +1,18 @@
+start
+	expression concavidad(function exp, real punto);
+		Dx[Dx[exp]];
+		real valor = exp(punto);
+		if(valor > 0);
+			out("Concava hacia arriba...");
+		else if(valor < 0);
+			out("Concava hacia abajo...");
+		else if(valor :: 0);
+			out("No tiene Concavidad");
+
+	thread main
+		function f = convertion(in("Introduzca una funcion..."), function);
+		real punto = convertion(in("Introduzca el punto a evaluar..."), real);
+		call concavidad(function, real);
+		graphic(f);
+		
+end

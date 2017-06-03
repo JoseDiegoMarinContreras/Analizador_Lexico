@@ -14,10 +14,11 @@ import java.util.regex.Pattern;
  * @author IVAN
  */
 public class AnalizadorLexico {
+    String t = "";
     Hashtable<String, Simbolo> tablaSimbolos;
     String Alfabeto=("[\\w]*[\\x09]*[\\x20]+[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x23]*[\\x3F]*[\\x23]*[\\x22]*[\\x2E]*[\\x20]+");
     String Alfabeto2=("[\\w]*[\\x09]*[\\x20]*[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x3F]*[\\xF9]*[\\x2E]*");
-    String patron = ("(start\\b|end\\b|natural\\b|integer\\b|real\\b|function\\b|table\\b|text\\b|bit\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b|call\\b|in\\b|out\\b|graphic\\b)|"
+    String patron = ("(Dx\\b|start\\b|end\\b|natural\\b|integer\\b|real\\b|function\\b|table\\b|text\\b|bit\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b|call\\b|in\\b|out\\b|graphic\\b)|"
             + "([:][:]|<=|>=|<|>|[=][?])|" //operador relacional
             + "([-][=]|[+][=]|[/][=]|[*][=]|[=])|" //operador de asignacion
             + "([a-zA-Z]+[a-zA-Z_0-9]*)|" //identificador
@@ -95,7 +96,8 @@ public class AnalizadorLexico {
                         if(w.equals("\"")){
                             for(x++;x<= texto[y].length();x++){
                                 if(x == texto[y].length()){
-                                    re[1]+="Error en la linea #"+(y+1)+". "+"\" perdido.\n";
+                                    re[1]+="Error en la linea "+(y+1)+". "+"\" perdido.\n";
+                                    w = "";
                                     break;
                                 }
                                 w += texto[y].substring(x,x+1);
@@ -112,7 +114,8 @@ public class AnalizadorLexico {
                     if(w.equals("\"")){
                         for(x++;x<= texto[y].length();x++){
                             if(x == texto[y].length()){
-                                re[1]+="Error en la linea #"+(y+1)+". "+"\" perdido.\n";
+                                re[1]+="Error en la linea "+(y+1)+". "+"\" perdido.\n";
+                                w = "";
                                 break;
                             }
                             w += texto[y].substring(x,x+1);
@@ -127,6 +130,7 @@ public class AnalizadorLexico {
             }
             compLex(w, y+1);
             w="";
+            t +="\n";
         }
         return re;
     }
@@ -174,12 +178,15 @@ public class AnalizadorLexico {
                         tabla(i, temp, l); // Enviar los datos para realizar la inserción en la tabla de simbolos
                         re[0] += tokens[i-1];
                         re[0] = re[0].replace("%s", temp);
+                        
+                        t += tokens[i-1];
+                        t = t.replace("%s", temp);
                         return;
                     }
                 }
             }
         }
-        re[1] = "Error lexico en la linea "+l+". "+tokens[c].substring(1,tokens[c].indexOf(","))+": "+temp+", "
+        re[1] += "Error lexico en la linea "+l+". "+tokens[c].substring(1,tokens[c].indexOf(","))+": "+temp+", "
         +temp.replace(r, " ")+" encontrado.\n";        //se reemplaza lo que esta bien y lo demas lo pondra en error
     }
     private void tabla(int i, String temp, int l){       

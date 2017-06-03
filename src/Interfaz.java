@@ -473,10 +473,29 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_guardarMousePressed
 
     private void compilarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compilarMousePressed
+        if(ma.path.equals("")){
+            guardarComo();
+            guardado=true;
+            return;
+        }
+        try{
+            ma.guardar(areaCodigo.jTextArea.getText());
+            guardado=true;
+        }catch(IOException err){
+            err.printStackTrace();
+        }
         String [] v = al.compilar(areaCodigo.jTextArea.getText().replaceAll("\t", ""));
         AreaComponentesL.setText(v[0]);
         AreaErrores.setText(v[1]);
         //AnalizadorSintactico alSinc = new AnalizadorSintactico(al);
+        if(AreaErrores.getText().isEmpty()){
+            AreaErrores.setForeground(Color.BLUE);
+            AreaErrores.setText("Compilado con Exito!!!"+al.t);
+            
+        }else{
+            AreaErrores.setForeground(Color.RED);
+            AreaErrores.setText(AreaErrores.getText()+"\nCompilado con Errores");        
+        }
     }//GEN-LAST:event_compilarMousePressed
 
     private void guardarDocMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarDocMousePressed
