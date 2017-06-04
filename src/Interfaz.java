@@ -168,9 +168,6 @@ public class Interfaz extends javax.swing.JFrame {
 
         abrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/folderopened-amarillo-icono-6397-32.png"))); // NOI18N
         abrir.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                abrirMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 abrirMousePressed(evt);
             }
@@ -178,9 +175,6 @@ public class Interfaz extends javax.swing.JFrame {
 
         guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/disquetes-excepto-icono-3849-32.png"))); // NOI18N
         guardar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                guardarMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 guardarMousePressed(evt);
             }
@@ -188,9 +182,6 @@ public class Interfaz extends javax.swing.JFrame {
 
         compilar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/clicknrun-icono-4776-32.png"))); // NOI18N
         compilar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                compilarMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 compilarMousePressed(evt);
             }
@@ -260,11 +251,6 @@ public class Interfaz extends javax.swing.JFrame {
         );
 
         archivoMenu.setText("Archivo");
-        archivoMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                archivoMenuActionPerformed(evt);
-            }
-        });
 
         nuevoDoc.setText("Nuevo");
         nuevoDoc.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -288,11 +274,6 @@ public class Interfaz extends javax.swing.JFrame {
         guardarDoc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 guardarDocMousePressed(evt);
-            }
-        });
-        guardarDoc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                guardarDocActionPerformed(evt);
             }
         });
         archivoMenu.add(guardarDoc);
@@ -365,26 +346,6 @@ public class Interfaz extends javax.swing.JFrame {
         panelPrincipal.setPreferredSize(dim);
     }//GEN-LAST:event_formComponentResized
 
-    private void abrirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirMouseClicked
-
-    }//GEN-LAST:event_abrirMouseClicked
-
-    private void guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarMouseClicked
-
-    }//GEN-LAST:event_guardarMouseClicked
-
-    private void compilarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compilarMouseClicked
-
-    }//GEN-LAST:event_compilarMouseClicked
-
-    private void guardarDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarDocActionPerformed
- 
-    }//GEN-LAST:event_guardarDocActionPerformed
-
-    private void archivoMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivoMenuActionPerformed
-        
-    }//GEN-LAST:event_archivoMenuActionPerformed
-
     private void miBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBuscarActionPerformed
         VentanaBuscar vb = new VentanaBuscar(this, true,areaCodigo.jTextArea);
         vb.setVisible(true);
@@ -420,7 +381,8 @@ public class Interfaz extends javax.swing.JFrame {
         }
         guardado=false;
         areaCodigo.jTextArea.setText("");
-        ma.path="";        
+        ma.path="";
+        this.setTitle(ma.path);
     }//GEN-LAST:event_nuevoDocMousePressed
 
     private void windowClosingEvent(WindowEvent e){
@@ -520,14 +482,6 @@ public class Interfaz extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this,"La tabla de símbolos no ha sido creada");
         }
     }//GEN-LAST:event_tablaSimActionPerformed
-
-    private void jScrollPane1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jScrollPane1KeyPressed
-        
-    }//GEN-LAST:event_jScrollPane1KeyPressed
-
-    private void jScrollPane1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jScrollPane1KeyReleased
-        
-    }//GEN-LAST:event_jScrollPane1KeyReleased
 
     public void abrir(){                
         int r = fc.showOpenDialog(this);
