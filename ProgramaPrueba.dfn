@@ -7,6 +7,6 @@ start
 	if (3<3);
 		nat = 3;
 		natural naturales = nat;
-	else if (((25-2+(3*5)<8);
+	else if (((25-2+((3*5)/5)<8);
 		nat=90;
 end

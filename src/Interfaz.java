@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -80,6 +81,8 @@ public class Interfaz extends javax.swing.JFrame {
                 guardado=false;
             }
         }); 
+        areaCodigo.jTextArea.setFont(new Font("Arial", 0, 18));
+        AreaComponentesL.setFont(new Font("Arial",0, 16));
         panelPrincipal.setBackground(new Color(237,139,68));
         areaCodigo.jTextArea.requestFocus();
     }

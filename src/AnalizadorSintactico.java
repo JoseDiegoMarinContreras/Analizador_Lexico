@@ -492,7 +492,8 @@ public class AnalizadorSintactico {
                                 System.out.println("r = "+r);
                                 return;
                             }
-                            j = r;                            
+                            j = r+1;                            
+                            //javax.swing.JOptionPane.showMessageDialog(null, "496 "+l[j]+" linea "+(nl));
                             int or=operacionR(l, nl, j);
                             if (or==0) {
                                 System.out.println("or = "+or);
@@ -530,6 +531,7 @@ public class AnalizadorSintactico {
             return 0;
         }
         j=re+1;
+        //javax.swing.JOptionPane.showMessageDialog(null, "533 "+l[j]+" linea "+(nl));
         for (String opAri:opArit) {
             if (l[j].equals(opAri)) {
                 j++;
@@ -538,7 +540,6 @@ public class AnalizadorSintactico {
                     j++;
                     //javax.swing.JOptionPane.showMessageDialog(null, "144 "+l[j]+" linea "+(nl));
                     if (l[j].equals(")")) {
-                        System.out.println("Error");
                         return j;
                     }
                 }else if(l[j].equals("(")){
@@ -563,13 +564,23 @@ public class AnalizadorSintactico {
         }
         for(String operador:opArit){
             if (l[j].equals(operador)) {
-                expArit(l, nl, j);
+                int o=expArit(l, nl, j);
+                if(o==0){
+                    System.out.println("o= "+o);
+                    return 0;
+                }
+                j = o;
             }
         }
         if (l[j].equals("(")) {
             j++;
             //javax.swing.JOptionPane.showMessageDialog(null, "570 "+l[j]+" linea "+(nl));
-            expArit(l, nl, j);
+            int n = expArit(l, nl, j);
+            if (n==0) {
+                System.out.println("n = "+n);
+                return 0;
+            }
+            j=n;
         }
         if (l[j].equals(";")||l[j].equals(")")) {
             return j;
@@ -596,7 +607,13 @@ public class AnalizadorSintactico {
                         return 0;
                     }
                 }else if(l[j].equals("(")){
-                    opAritmetica(l, nl, j);
+                    int nu=opAritmetica(l, nl, j);
+                    if (nu==0) {
+                        System.out.println("nu = "+nu);
+                        return 0;
+                    }
+                    j=nu+1;
+                    //javax.swing.JOptionPane.showMessageDialog(null, "615 "+l[j]+" linea "+(nl));
                 }else{
                     System.out.println("180 Error sintáctico en la linea "+(nl)+", condición mal formada en "+l[j]);
                     return 0;

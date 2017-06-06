@@ -46,7 +46,7 @@ public class AreaCodigo extends javax.swing.JPanel {
         
         nl = new ArrayList<>();
         counter = 1;
-        formato = new Font("Monospaced", Font.PLAIN, 14);
+        formato = new Font("Monospaced", Font.PLAIN, 18);
                 
         nl.add(new JLabel("1"));
         nl.get(0).setFont(formato);
@@ -93,7 +93,7 @@ public class AreaCodigo extends javax.swing.JPanel {
    
     public void agregarLinea(int n){
         for(int i = 0; i<n; i++){
-        int e = 4+16*counter;
+        int e = 4+22*counter;
         counter++;
         nl.add(new JLabel(counter+""));
         nl.get(counter-1).setFont(formato);
@@ -101,7 +101,7 @@ public class AreaCodigo extends javax.swing.JPanel {
         
         jPanenum.add(nl.get(counter-1));
         //showMessageDialog(this,e+"");
-        nl.get(counter-1).setBounds(0,e,34,15);
+        nl.get(counter-1).setBounds(0,e,34,24);
         jPanenum.updateUI();
         }
     }
