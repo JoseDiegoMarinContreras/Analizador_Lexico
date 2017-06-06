@@ -482,10 +482,10 @@ public class AnalizadorSintactico {
                         System.out.println("90 Fin de linea");
                         return;
                     }
-                    javax.swing.JOptionPane.showMessageDialog(null, "93 "+l[j]+" linea "+(nl));
+                    //javax.swing.JOptionPane.showMessageDialog(null, "93 "+l[j]+" linea "+(nl));
                     if (l[j].equals("(")) {
                         j++;
-                        javax.swing.JOptionPane.showMessageDialog(null, "96 "+l[j]+" linea "+(nl));
+                        //javax.swing.JOptionPane.showMessageDialog(null, "96 "+l[j]+" linea "+(nl));
                         if (l[j].equals("(")) {
                             int r= opAritmetica(l, nl, j);
                             if (r==0) {
@@ -523,7 +523,7 @@ public class AnalizadorSintactico {
     }
     private int opAritmetica(String[] l, int nl, int j){
         j++;
-        javax.swing.JOptionPane.showMessageDialog(null, "134 "+l[j]+" linea "+(nl));
+        //javax.swing.JOptionPane.showMessageDialog(null, "134 "+l[j]+" linea "+(nl));
         int re=expArit(l, nl, j);
         if (re==0) {
             System.out.println("re = "+re);
@@ -533,11 +533,12 @@ public class AnalizadorSintactico {
         for (String opAri:opArit) {
             if (l[j].equals(opAri)) {
                 j++;
-                javax.swing.JOptionPane.showMessageDialog(null, "141 "+l[j]+" linea "+(nl));
+                //javax.swing.JOptionPane.showMessageDialog(null, "141 "+l[j]+" linea "+(nl));
                 if (l[j].equals("ID")||l[j].equals("NUMERO")) {
                     j++;
-                    javax.swing.JOptionPane.showMessageDialog(null, "144 "+l[j]+" linea "+(nl));
+                    //javax.swing.JOptionPane.showMessageDialog(null, "144 "+l[j]+" linea "+(nl));
                     if (l[j].equals(")")) {
+                        System.out.println("Error");
                         return j;
                     }
                 }else if(l[j].equals("(")){
@@ -555,10 +556,10 @@ public class AnalizadorSintactico {
     
     private int expArit(String[] l, int nl, int j){
         j++;
-        javax.swing.JOptionPane.showMessageDialog(null, "164 "+l[j]+" linea "+(nl));
+        //javax.swing.JOptionPane.showMessageDialog(null, "164 "+l[j]+" linea "+(nl));
         if (l[j].equals("NUMERO")||l[j].equals("ID")) {
             j++;
-            javax.swing.JOptionPane.showMessageDialog(null, "173 "+l[j]+" linea "+(nl));
+            //javax.swing.JOptionPane.showMessageDialog(null, "173 "+l[j]+" linea "+(nl));
         }
         for(String operador:opArit){
             if (l[j].equals(operador)) {
@@ -567,26 +568,26 @@ public class AnalizadorSintactico {
         }
         if (l[j].equals("(")) {
             j++;
-            javax.swing.JOptionPane.showMessageDialog(null, "570 "+l[j]+" linea "+(nl));
+            //javax.swing.JOptionPane.showMessageDialog(null, "570 "+l[j]+" linea "+(nl));
             expArit(l, nl, j);
         }
-        if (!l[j].equals(";")||!l[j].equals(")")) {
-            return 0;
-        }else{
+        if (l[j].equals(";")||l[j].equals(")")) {
             return j;
+        }else{
+            return 0;
         }
     }
     
     private int operacionR(String[] l, int nl, int j){
         j++;
-        javax.swing.JOptionPane.showMessageDialog(null, "162 "+l[j]+" linea "+(nl));
+        //javax.swing.JOptionPane.showMessageDialog(null, "162 "+l[j]+" linea "+(nl));
         for (String op:opRel) {                            
             if (l[j].equals(op)) {
                 j++;
-                javax.swing.JOptionPane.showMessageDialog(null, "166 "+l[j]+" linea "+(nl));
+                //javax.swing.JOptionPane.showMessageDialog(null, "166 "+l[j]+" linea "+(nl));
                 if (l[j].equals("ID")||l[j].equals("NUMERO")) {
                     j++;
-                    javax.swing.JOptionPane.showMessageDialog(null, "169 "+l[j]+" linea "+(nl));
+                    //javax.swing.JOptionPane.showMessageDialog(null, "169 "+l[j]+" linea "+(nl));
                     if (l[j].equals(")")) {
                         System.out.println("171 Condición bien formada en la linea "+(nl));
                         return j;

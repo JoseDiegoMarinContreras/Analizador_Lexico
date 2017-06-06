@@ -1,5 +1,5 @@
 start
-	integer entero = 10;
+	integer entero =0;
 	natural nat = 8;
 	real flotante = 5.9;
 	text cadena = "Calculo Diferencial";
@@ -7,6 +7,6 @@ start
 	if (3<3);
 		nat = 3;
 		natural naturales = nat;
-	else if (((25-2+(3*5)/6)-2)<8);
+	else if (((25-2+(3*5)<8);
 		nat=90;
 end
