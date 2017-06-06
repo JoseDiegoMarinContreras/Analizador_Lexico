@@ -40,11 +40,6 @@ public class Grafo {
         if(NodoOrigen == null || NodoDestino == null){return false;}
         return NodoOrigen.enlazar(NodoDestino, val);
     }
-        
-    
-    public boolean validarElem(String elemento){
-        return recorrer(elemento,0, ini);        
-    }
     
     public boolean mover(String elemento){
         Arista ar;
@@ -59,9 +54,8 @@ public class Grafo {
                     return true;
                 }
             }else if(ar.val.equals(elemento)){
-                if(recorrer(elemento, i+1, ar.punteroaVertice)){
-                    return true;
-                }
+                t = ar.punteroaVertice;
+                return true;
             }
         }
         return false;      
@@ -80,42 +74,23 @@ public class Grafo {
                     return true;
                 }
             }else if(ar.val.equals(elemento)){
-                temp = ar.punteroaVertice;
+                t = ar.punteroaVertice;
                 return true;
             }
         }
         return false;        
     }
     
-    private boolean recorrer(String elemento, int i, Vertice temp){
+    public String[] sigArista(){
         Arista ar;
-        
-        if(i == elemento.length()){
-            for(ar = temp.arista;ar != null;ar = ar.sig){
-                if(ar.val.equals("")){
-                    if(recorrer(elemento,i,ar.punteroaVertice)){
-                        return true;
-                    }
-                }
-            }
-            return temp.efin;
+        String cad = "";
+        if(t.arista == null){
+            return null;
         }
-        
-        for(ar = temp.arista;ar != null;ar = ar.sig){
-            if(ar.val.equals("")){
-                if(recorrer(elemento,i,ar.punteroaVertice)){
-                    return true;
-                }
-            }else if(ar.val.equals(elemento.substring(i,i+1))){
-                if(recorrer(elemento, i+1, ar.punteroaVertice)){
-                    return true;
-                }
-            }
+        for(ar = t.arista; ar != null; ar = ar.sig){
+            cad += ar.val+",";
         }
-        return false;
+        cad = cad.substring(0, cad.length()-1);
+        return cad.split(",");
     }
-    
-    
-    
- 
 }

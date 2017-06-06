@@ -18,7 +18,8 @@ public class AnalizadorLexico {
     Hashtable<String, Simbolo> tablaSimbolos;
     String Alfabeto=("[\\w]*[\\x09]*[\\x20]+[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x23]*[\\x3F]*[\\x23]*[\\x22]*[\\x2E]*[\\x20]+");
     String Alfabeto2=("[\\w]*[\\x09]*[\\x20]*[\\x3C]*[\\x3E]*[\\x3D]*[\\x2B]*[\\x2D]*[\\x2F]*[\\x2A]*[\\x3A]*[\\x2C]*[\\x28]*[\\x29]*[\\x5B]*[\\x5D]*[\\x7B]*[\\x7D]*[ñ]*[Ñ]*[á]*[Á]*[é]*[É]*[í]*[Í]*[ó]*[Ó]*[ú]*[Ú]*[\\x7C]*[\\x26]*[\\x25]*[\\x5F]*[\\x5E]*[\\x3F]*[\\xF9]*[\\x2E]*");
-    String patron = ("(Dx\\b|start\\b|end\\b|natural\\b|integer\\b|real\\b|function\\b|table\\b|text\\b|bit\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b|call\\b|in\\b|out\\b|graphic\\b)|"
+    String patron = ("(Dx\\b|start\\b|end\\b|table\\b|infinity\\b|pi\\b|euler\\b|if\\b|else\\b|during\\b|from\\b|to\\b|do\\b|terminal\\b|expression\\b|thread\\b|main\\b|convertion\\b|call\\b|in\\b|out\\b|graphic\\b)|"
+            +"(natural\\b|integer\\b|real\\b|function\\b|text\\b|bit\\b)|"//TIPO_DATO
             + "([:][:]|<=|>=|<|>|[=][?])|" //operador relacional
             + "([-][=]|[+][=]|[/][=]|[*][=]|[=])|" //operador de asignacion
             + "([a-zA-Z]+[a-zA-Z_0-9]*)|" //identificador
@@ -35,7 +36,7 @@ public class AnalizadorLexico {
             + "([.|,|;])");//signos de puntuacion
     String[] tipoDato= {"natural","integer","real","text","bit"};//tipos de datos
     
-    String[] tokens ={"<Palabra Reservada, %s>\n", "<Operador Relacional, %s>\n", "<Operador de Asignación, %s>\n",
+    String[] tokens ={"<Palabra Reservada, %s>\n", "<Tipo de Dato, %s>\n", "<Operador Relacional, %s>\n", "<Operador de Asignación, %s>\n",
                      "<Identificador, %s>\n", "<Concatenación, %s>\n", "<Cadena Vacia, %s>\n", "<Comentario Simple, %s>\n",
                      "<Comentario Largo, %s>\n", "<Cadena de Texto, %s>\n", "<Función Especial, %s>\n", "<Operador Lógico, %s>\n",
                      "<Signo de Agrupación, %s>\n", "<Número, %s>\n", "<Operador Aritmetico, %s>\n","<Signo de Puntuación, %s>\n"};
@@ -182,23 +183,27 @@ public class AnalizadorLexico {
                         
                         switch(tokens[i-1]){
                             case "<Número, %s>\n":{
-                                t += "NUMERO,";
+                                t += "NUMERO$";
                                 break;
                             }
                             case "<Cadena de Texto, %s>\n":{
-                                t += "CADENA,";
+                                t += "CADENA$";
                                 break;
                             }
                             case "<Cadena Vacia, %s>\n":{
-                                t += "CAD_VACIA,";
+                                t += "CAD_VACIA$";
                                 break;
                             }
                             case "<Identificador, %s>\n":{
-                                t += "ID,";
+                                t += "ID$";
+                                break;
+                            }
+                            case "<Tipo de Dato, %s>\n":{
+                                t += "TIPO_DATO$";
                                 break;
                             }
                             default:{
-                                t += temp+",";
+                                t += temp+"$";
                             }
                         }
                         return;

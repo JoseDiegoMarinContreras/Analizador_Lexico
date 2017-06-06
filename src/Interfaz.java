@@ -448,9 +448,10 @@ public class Interfaz extends javax.swing.JFrame {
         }
         String [] v = al.compilar(areaCodigo.jTextArea.getText().replaceAll("\t", ""));
         AreaComponentesL.setText(v[0]);
-        AreaErrores.setText(v[1]);
+        String errL = v[1];
         AnalizadorSintactico alSinc = new AnalizadorSintactico();
-        AreaErrores.setText(alSinc.compilar(al.t));
+        String errS = alSinc.compilar(al.t);
+        AreaErrores.setText(acomodarErr(errL, errS));
         if(AreaErrores.getText().isEmpty()){
             AreaErrores.setForeground(Color.BLUE);
             AreaErrores.setText("Compilado con Exito!!!\n"+al.t);
@@ -461,6 +462,24 @@ public class Interfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_compilarMousePressed
 
+    public String acomodarErr(String err1, String err2){
+        String []e1 = (err1+"\n"+err2).split("\n");
+        for(int i = 0; i < e1.length; i++){
+            for(int j = 0; j < e1.length && i!= j; j++){
+                if(e1[i].substring(e1[i].indexOf(" ")+1,e1[i].indexOf("."))
+                        .compareToIgnoreCase(e1[j].substring(e1[i].indexOf(" ")+1,e1[i].indexOf("."))) < 0){
+                    String aux = e1[i];
+                    e1[i] = e1[j];
+                    e1[j] = aux;
+                }        
+            }
+        }
+        String cad ="";
+        for(int i = 0; i < e1.length; i++){
+            cad+=e1[i]+"\n";
+        }
+        return cad;
+    }
     private void guardarDocMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guardarDocMousePressed
         guardarMousePressed(null);
     }//GEN-LAST:event_guardarDocMousePressed
