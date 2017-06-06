@@ -59,7 +59,7 @@ public class Grafo {
                     return true;
                 }
             }else if(ar.val.equals(elemento)){
-                if(recorrer(elemento, i+1, ar.punteroaVertice)){
+                if(recorrer(elemento, /*i+*/1, ar.punteroaVertice)){
                     return true;
                 }
             }

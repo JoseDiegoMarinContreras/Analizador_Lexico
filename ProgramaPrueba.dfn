@@ -6,5 +6,5 @@ start
 	bit bool = 1;
 	if(nat::3);
 		nat = 3;
-	
+		natural naturales = nat;
 end
