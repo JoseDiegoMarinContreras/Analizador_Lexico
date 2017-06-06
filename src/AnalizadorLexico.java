@@ -222,10 +222,10 @@ public class AnalizadorLexico {
                 }
             }
         }
-        if (i == 4) {//Verificar si el grupo corresponde a un identificador
-            if(bandera){
-                simbolo.valor = temp;
-                simbolo.fila = l;
+        if (i == 4) {//Verificar si el grupo corresponde a un identificador                
+            if (bandera) {
+                simbolo.valor=temp;
+                simbolo.fila=l;
             }else{
                 nombre = temp;//Asignamos el identificador a nombre
                 simbolo.fila = l;//Asignamos la fila en la que fue declarado el identificador
@@ -245,7 +245,7 @@ public class AnalizadorLexico {
             bandera = false;//Desactivar la bandera
         }
         if(i == 15) {//Verificar si el grupo corresponde a un signo de puntuación
-            if (temp.equals(";")||temp.equals(",")) {//Verificar si el signo de puntuación corresponde con el delimitador de linea
+            if (temp.equals(";") || temp.equals(",")) {//Verificar si el signo de puntuación corresponde con el delimitador de linea
                 if (!tablaSimbolos.containsKey(nombre) && simbolo.tipo!=null && simbolo.fila!=0 && !nombre.equals("")) {//Verificamos que la tabla de simbolos no contenga el identificador y verificar que realmente se esta declarando la variable y no modificando
                     tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));//Insertamos en la tabla un nuevo simbolo
                     nombre = "";
@@ -262,8 +262,8 @@ public class AnalizadorLexico {
                         //AreaErrores.setText("Error, en la linea "+simbolo.fila+" Identificador duplicado");
                     }
                 }
-                nombre= "";
-                simbolo = new Simbolo();                
+                nombre="";// Inicializar la variable para el nombre del identificador
+                simbolo = new Simbolo();// Inicializar la variable simbolo
             }
         }
     }
