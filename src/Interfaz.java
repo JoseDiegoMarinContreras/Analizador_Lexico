@@ -449,10 +449,11 @@ public class Interfaz extends javax.swing.JFrame {
         String [] v = al.compilar(areaCodigo.jTextArea.getText().replaceAll("\t", ""));
         AreaComponentesL.setText(v[0]);
         AreaErrores.setText(v[1]);
-        //AnalizadorSintactico alSinc = new AnalizadorSintactico(al);
+        AnalizadorSintactico alSinc = new AnalizadorSintactico();
+        AreaErrores.setText(alSinc.compilar(al.t));
         if(AreaErrores.getText().isEmpty()){
             AreaErrores.setForeground(Color.BLUE);
-            AreaErrores.setText("Compilado con Exito!!!"+al.t);
+            AreaErrores.setText("Compilado con Exito!!!\n"+al.t);
             
         }else{
             AreaErrores.setForeground(Color.RED);

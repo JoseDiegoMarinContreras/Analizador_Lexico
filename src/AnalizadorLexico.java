@@ -43,6 +43,7 @@ public class AnalizadorLexico {
     private String [] re;
     
     public String [] compilar(String codigo){
+        t = "";
         tablaSimbolos = new Hashtable<>();
         re = new String[2];
         re[0] = re[1] = "";
@@ -179,8 +180,27 @@ public class AnalizadorLexico {
                         re[0] += tokens[i-1];
                         re[0] = re[0].replace("%s", temp);
                         
-                        t += tokens[i-1];
-                        t = t.replace("%s", temp);
+                        switch(tokens[i-1]){
+                            case "<Número, %s>\n":{
+                                t += "NUMERO,";
+                                break;
+                            }
+                            case "<Cadena de Texto, %s>\n":{
+                                t += "CADENA,";
+                                break;
+                            }
+                            case "<Cadena Vacia, %s>\n":{
+                                t += "CAD_VACIA,";
+                                break;
+                            }
+                            case "<Identificador, %s>\n":{
+                                t += "ID,";
+                                break;
+                            }
+                            default:{
+                                t += temp+",";
+                            }
+                        }
                         return;
                     }
                 }
