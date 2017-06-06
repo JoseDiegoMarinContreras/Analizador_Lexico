@@ -122,6 +122,11 @@ public class AnalizadorSintactico {
               aSelse();
                break;
             }
+            case "ID":{
+              t = "asignacion de variable";
+              aSid();
+               break;
+            }
             case "":{
                 return;
             }
@@ -142,6 +147,8 @@ public class AnalizadorSintactico {
                     Vertice v = g.t.arista.punteroaVertice;
                     for(int a = i+1; a < l.length; a++){
                         if(v.arista.val.equals(l[a])){
+                            i = a-1;
+                            g.mover("cond");
                             break;
                         }
                         c += l[a];
@@ -149,11 +156,12 @@ public class AnalizadorSintactico {
                    /*if(!metodoAgustin(c)){
                     err += "Error sintactico en la linea "+nl+". Condicion mal hecha.\n";    
                     }*/
-                }
-                if(g.t.arista.val.equals("expr")){
+                }else if(g.t.arista.val.equals("expr")){
                     Vertice v = g.t.arista.sig.punteroaVertice;
                     for(int a = i+1; a < l.length; a++){
                         if(v.arista.val.equals(l[a])){
+                            i = a-1;
+                            g.mover("expr");
                             break;
                         }
                         c += l[a];
@@ -161,6 +169,9 @@ public class AnalizadorSintactico {
                    /*if(!metodoAgustin(c)){
                     err += "Error sintactico en la linea "+nl+". Expresion aritmetica mal hecha.\n";    
                     }*/
+                }
+                if(!(i < l.length)){
+                    return;
                 }
             }
         }
@@ -463,9 +474,26 @@ public class AnalizadorSintactico {
         
         g.crearArista("q1", "q2", "else");
         g.crearArista("q2", "q3", ";");
-        g.crearArista("q2", "q4", "else");
+        g.crearArista("q2", "q4", "if");
         g.crearArista("q4", "q5", "cond");
         g.crearArista("q5", "q6", ";");
+    }
+    
+    public void aSid(){
+        g = new Grafo();
+        g.insertar("q1", true, false);
+        g.insertar("q2", false, false);
+        g.insertar("q3", false, true);
+        g.insertar("q4", false, false);
+        g.insertar("q5", false, true);
+        
+        g.crearArista("q1", "q2", "ID");
+        g.crearArista("q2", "q3", "=");
+        g.crearArista("q3", "q4", "NUMERO");
+        g.crearArista("q3", "q4", "ID");
+        g.crearArista("q3", "q4", "CADENA");
+        g.crearArista("q4", "q5", ";");
+        g.crearArista("q2", "q5", ";");
     }   
     private void condicion(String []l, int nl, int num){
         boolean ban=false;
