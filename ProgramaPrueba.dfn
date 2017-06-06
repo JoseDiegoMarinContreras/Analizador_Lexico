@@ -4,7 +4,9 @@ start
 	real flotante = 5.9;
 	text cadena = "Calculo Diferencial";
 	bit bool = 1;
-	if(nat::3);
+	if (3<3);
 		nat = 3;
 		natural naturales = nat;
+	else if (((25-2+(3*5)/6)-2)<8);
+		nat=90;
 end

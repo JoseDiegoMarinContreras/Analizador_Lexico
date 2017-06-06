@@ -1,0 +1,3 @@
+start
+	real red = 23;
+	if(red>(23-12+23));

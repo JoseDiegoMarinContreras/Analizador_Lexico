@@ -1,5 +1,9 @@
 public class AnalizadorSintactico {
     String err;
+    String[] tipoDato= {"natural","integer","real","text","bit","function"};//tipos de datos
+    String[] opRel={"::","<=",">=","=?","<",">"};
+    String[] opLog={"AND","OR"};
+    String[] opArit={"+","-","/","*"};    
     Grafo g;
     String startp, ifp;
     
@@ -33,6 +37,7 @@ public class AnalizadorSintactico {
     
     public void aSintactico(String []l, int nl){
         String t = "";
+        condicion(l, nl, 0);
         switch(l[0]){
             case "start":{
                startp = nl+","+startp;
@@ -462,4 +467,141 @@ public class AnalizadorSintactico {
         g.crearArista("q4", "q5", "cond");
         g.crearArista("q5", "q6", ";");
     }   
+    private void condicion(String []l, int nl, int num){
+        boolean ban=false;
+        for (int i = num; i < l.length; i++) {            
+            if (l[i].equals("else")) {//condición que pone la bandera en true para poderse aplicar a un else if
+                i++;
+            }
+            if (l[i].equals("if") || l[i].equals("during")||(l[i].equals("if")&&ban)) {// condición que nos permite evaluar las condiciones
+                if (ban) {// verificar si la bandera esta activada para las condiciones else if
+                    ban=false;// apagar la bandera
+                }
+                for (int j = i+1; j < l.length; j++) {// for para recorrer el resto de la condición
+                    if (l[j].equals(";")) {//condición para verificar si se ha llegado al fin de linea
+                        System.out.println("90 Fin de linea");
+                        return;
+                    }
+                    javax.swing.JOptionPane.showMessageDialog(null, "93 "+l[j]+" linea "+(nl));
+                    if (l[j].equals("(")) {
+                        j++;
+                        javax.swing.JOptionPane.showMessageDialog(null, "96 "+l[j]+" linea "+(nl));
+                        if (l[j].equals("(")) {
+                            int r= opAritmetica(l, nl, j);
+                            if (r==0) {
+                                System.out.println("r = "+r);
+                                return;
+                            }
+                            j = r;                            
+                            int or=operacionR(l, nl, j);
+                            if (or==0) {
+                                System.out.println("or = "+or);
+                                return;
+                            }
+                            j= or;
+                        }else
+                        if (l[j].equals("ID")||l[j].equals("NUMERO")) { 
+                            int opr = operacionR(l,nl,j);
+                            if (opr==0) {
+                                System.out.println("opr = "+opr);
+                                return;
+                            }
+                            j= opr;
+                        }else{
+                            System.out.println("119 Error sintáctico en la linea "+(nl)+", condición mal formada en "+l[j]);
+                            return;
+                        }                        
+                    }else{
+                        System.out.println("123 Error sintáctico en la linea "+(nl)+", condición mal formada en "+l[j]);
+                        return;
+                    }
+                }
+            }else{
+                return;
+            }
+        }
+    }
+    private int opAritmetica(String[] l, int nl, int j){
+        j++;
+        javax.swing.JOptionPane.showMessageDialog(null, "134 "+l[j]+" linea "+(nl));
+        int re=expArit(l, nl, j);
+        if (re==0) {
+            System.out.println("re = "+re);
+            return 0;
+        }
+        j=re+1;
+        for (String opAri:opArit) {
+            if (l[j].equals(opAri)) {
+                j++;
+                javax.swing.JOptionPane.showMessageDialog(null, "141 "+l[j]+" linea "+(nl));
+                if (l[j].equals("ID")||l[j].equals("NUMERO")) {
+                    j++;
+                    javax.swing.JOptionPane.showMessageDialog(null, "144 "+l[j]+" linea "+(nl));
+                    if (l[j].equals(")")) {
+                        return j;
+                    }
+                }else if(l[j].equals("(")){
+                    System.out.println("Recursiva");
+                    opAritmetica(l,nl, j+1);
+                }
+                else{
+                    System.out.println("149 Error sintáctico en la linea "+(nl)+", operación arimética mal creada en "+l[j]);
+                }
+            }
+        }
+        System.out.println("153 Error sintáctico en la linea "+(nl)+", operación arimética mal creada en "+l[j]);
+        return 0;
+    }
+    
+    private int expArit(String[] l, int nl, int j){
+        j++;
+        javax.swing.JOptionPane.showMessageDialog(null, "164 "+l[j]+" linea "+(nl));
+        if (l[j].equals("NUMERO")||l[j].equals("ID")) {
+            j++;
+            javax.swing.JOptionPane.showMessageDialog(null, "173 "+l[j]+" linea "+(nl));
+        }
+        for(String operador:opArit){
+            if (l[j].equals(operador)) {
+                expArit(l, nl, j);
+            }
+        }
+        if (l[j].equals("(")) {
+            j++;
+            javax.swing.JOptionPane.showMessageDialog(null, "570 "+l[j]+" linea "+(nl));
+            expArit(l, nl, j);
+        }
+        if (!l[j].equals(";")||!l[j].equals(")")) {
+            return 0;
+        }else{
+            return j;
+        }
+    }
+    
+    private int operacionR(String[] l, int nl, int j){
+        j++;
+        javax.swing.JOptionPane.showMessageDialog(null, "162 "+l[j]+" linea "+(nl));
+        for (String op:opRel) {                            
+            if (l[j].equals(op)) {
+                j++;
+                javax.swing.JOptionPane.showMessageDialog(null, "166 "+l[j]+" linea "+(nl));
+                if (l[j].equals("ID")||l[j].equals("NUMERO")) {
+                    j++;
+                    javax.swing.JOptionPane.showMessageDialog(null, "169 "+l[j]+" linea "+(nl));
+                    if (l[j].equals(")")) {
+                        System.out.println("171 Condición bien formada en la linea "+(nl));
+                        return j;
+                    }else{
+                        System.out.println("174 Error sintáctico en la linea "+(nl)+", condición mal formada en "+l[j]);
+                        return 0;
+                    }
+                }else if(l[j].equals("(")){
+                    opAritmetica(l, nl, j);
+                }else{
+                    System.out.println("180 Error sintáctico en la linea "+(nl)+", condición mal formada en "+l[j]);
+                    return 0;
+                }
+            }
+        }
+        return 0;
+    }
 }

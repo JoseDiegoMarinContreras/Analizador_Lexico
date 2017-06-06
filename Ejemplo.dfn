@@ -1,12 +1,9 @@
 start
 	expression concavidad(function exp, real punto);
-<<<<<<< HEAD
 		Dx[exp];
 		real valor = exp(punto);
-=======
 		Dx[Dx[exp]];
 		real valor= exp(punto) ;
->>>>>>> origin/master
 		if(valor > 0);
 			out("Concava hacia arriba...");
 		else if(valor < 0);
