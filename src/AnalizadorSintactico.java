@@ -1,13 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author JoseSantiago
- */
 public class AnalizadorSintactico {
     String err;
     Grafo g;
@@ -21,14 +11,16 @@ public class AnalizadorSintactico {
        String lc[] = codigo.split("\n");
        
        for(int i = 0; i < lc.length; i++){
-           lc[i] = lc[i].substring(0, lc[i].length()-1);
-           lc[i] = lc[i].replaceFirst("$-$=$", "$ASIGNACION$");
-           lc[i] = lc[i].replaceFirst("$+$=$", "$ASIGNACION$");
-           lc[i] = lc[i].replaceFirst("$/$=$", "$ASIGNACION$");
-           lc[i] = lc[i].replaceFirst("$*$=$", "$ASIGNACION$");
-           lc[i] = lc[i].replaceFirst("$-$-$", "$--$");
-           lc[i] = lc[i].replaceFirst("$+$+$", "$++$");
-           aSintactico(lc[i].split("$"), i+1);
+           if(!lc[i].equals("")){
+                lc[i] = lc[i].substring(0, lc[i].length()-1);
+                lc[i] = lc[i].replaceFirst("@-@=@", "ASIGNACION@");
+                lc[i] = lc[i].replaceFirst("@+@=@", "@ASIGNACION@");
+                lc[i] = lc[i].replaceFirst("@/@=@", "@ASIGNACION@");
+                //lc[i] = lc[i].replaceFirst("@*@=@", "@ASIGNACION@");
+                lc[i] = lc[i].replaceFirst("@-@-@", "@--@");
+                lc[i] = lc[i].replaceFirst("@+@+@", "@++@");
+                aSintactico(lc[i].split("@"), i+1);
+           }
        }
        String []p = startp.split(",");
        if(p.length > 2){
@@ -44,14 +36,14 @@ public class AnalizadorSintactico {
         switch(l[0]){
             case "start":{
                startp = nl+","+startp;
-               break;
+               return;
             }
             case "end":{
                if(startp.equals("")){
                    err += "Error sintactico en la linea "+nl+". END sin START.\n";
                }
                startp = startp.replaceFirst(startp.substring(0, startp.indexOf(",")+1),"");
-               break;
+               return;
             }
             case "expression":{
                 t = "declarar metodo";
@@ -129,18 +121,20 @@ public class AnalizadorSintactico {
                 return;
             }
             default:{
-                err += "Error sintactico en la linea  sentencia mal hecha.\n";
+                err += "Error sintactico en la linea "+nl+". Sentencia mal hecha.\n";
+                return;
             }
         }
+        g.t = g.ini;
         for(int i = 0; i < l.length; i++){
             if(!g.mover(l[i])){
                 err += "Error sintactico en la linea "+nl+". "+l[i]+" mal puesto.\n";
-                break;
+                return;
             }
             if(g.t.arista != null){
                 String c="";
                 if(g.t.arista.val.equals("cond")){
-                    Vertice v = g.t.arista.sig.punteroaVertice;
+                    Vertice v = g.t.arista.punteroaVertice;
                     for(int a = i+1; a < l.length; a++){
                         if(v.arista.val.equals(l[a])){
                             break;

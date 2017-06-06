@@ -464,6 +464,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     public String acomodarErr(String err1, String err2){
         String []e1 = (err1+"\n"+err2).split("\n");
+        /*
         for(int i = 0; i < e1.length; i++){
             for(int j = 0; j < e1.length && i!= j; j++){
                 if(e1[i].substring(e1[i].indexOf(" ")+1,e1[i].indexOf("."))
@@ -473,7 +474,7 @@ public class Interfaz extends javax.swing.JFrame {
                     e1[j] = aux;
                 }        
             }
-        }
+        }*/
         String cad ="";
         for(int i = 0; i < e1.length; i++){
             cad+=e1[i]+"\n";
