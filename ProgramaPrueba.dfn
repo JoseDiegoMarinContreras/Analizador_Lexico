@@ -4,7 +4,7 @@ start
 	real flotante = 5.9;
 	text cadena = "Calculo Diferencial";
 	bit bool = 1;
-	if ((2+4)>8);
+	if ((2+)>8);
 		nat = 3;
 		natural naturales = nat;
 	else if (23::12);

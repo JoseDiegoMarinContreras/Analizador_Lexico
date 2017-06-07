@@ -550,36 +550,40 @@ public class AnalizadorSintactico {
         }
     }
     private int opAritmetica(String[] l, int nl, int j){
-        j++;
+        //j++;
         //javax.swing.JOptionPane.showMessageDialog(null, "134 "+l[j]+" linea "+(nl));
         int re=expArit(l, nl, j);
         if (re==0) {
             System.out.println("re = "+re);
             return 0;
         }
-        j=re+1;
-        //javax.swing.JOptionPane.showMessageDialog(null, "533 "+l[j]+" linea "+(nl));
+        j = re;
         for (String opAri:opArit) {
             if (l[j].equals(opAri)) {
                 j++;
                 //javax.swing.JOptionPane.showMessageDialog(null, "141 "+l[j]+" linea "+(nl));
-                if (l[j].equals("ID")||l[j].equals("NUMERO")) {
-                    j++;
-                    //javax.swing.JOptionPane.showMessageDialog(null, "144 "+l[j]+" linea "+(nl));
-                    if (l[j].equals(")")) {
-                        return j;
-                    }
-                }else if(l[j].equals("(")){
+                if(l[j].equals("(")){
                     System.out.println("Recursiva");
-                    opAritmetica(l,nl, j+1);
-                }
-                else{
+                    int v=opAritmetica(l,nl, j+1);
+                    if (v==0){
+                        System.out.println("v = "+v);
+                        return 0;
+                    }
+                    j=v;
+                //javax.swing.JOptionPane.showMessageDialog(null, "144 "+l[j]+" linea "+(nl));
+                }else if (l[j].equals(")")) {
+                        return j;
+                }else{
                     err+="Error sintáctico en la línea "+(nl)+", operación arimética mal creada en "+l[j]+"\n";
                 }
             }
         }
-        err+="Error sintáctico en la línea "+(nl)+", operación arimética mal creada en "+l[j]+"\n";
-        return 0;
+        if (l[j].equals(")")) {
+            return j;
+        }else{
+            err+="Error sintáctico en la línea "+(nl)+", operación arimética mal creada en "+l[j]+"\n";
+            return 0;
+        }
     }
     
     private int expArit(String[] l, int nl, int j){
@@ -610,6 +614,7 @@ public class AnalizadorSintactico {
             j=n;
         }
         if (l[j].equals(";")||l[j].equals(")")) {
+            System.out.println("fin  de condición");
             return j;
         }else{
             return 0;

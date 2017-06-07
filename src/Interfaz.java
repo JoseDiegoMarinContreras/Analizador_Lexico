@@ -83,6 +83,7 @@ public class Interfaz extends javax.swing.JFrame {
         }); 
         areaCodigo.jTextArea.setFont(new Font("Arial", 0, 18));
         AreaComponentesL.setFont(new Font("Arial",0, 16));
+        AreaErrores.setFont(new Font("Arial",0, 18));
         panelPrincipal.setBackground(new Color(237,139,68));
         areaCodigo.jTextArea.requestFocus();
     }
