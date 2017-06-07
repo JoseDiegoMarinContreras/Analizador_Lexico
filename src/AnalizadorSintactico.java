@@ -50,6 +50,11 @@ public class AnalizadorSintactico {
                startp = startp.replaceFirst(startp.substring(0, startp.indexOf(",")+1),"");
                return;
             }
+            case "thread":{
+                t = "thread_main";
+                aSthm();
+               break;
+            }
             case "expression":{
                 t = "declarar metodo";
                 aSexpression();
@@ -91,6 +96,21 @@ public class AnalizadorSintactico {
                break;
             }
             case "Dx":{
+                int d = 0,c = 0;
+               for(int i = 0; i < l.length; i++){
+                   if(l[i].equals("Dx") && i < l.length){
+                       if(l[i+1].equals("[")){
+                       d++;                           
+                       }
+                   }
+                   if(l[i].equals("]")){
+                       c++;
+                   }
+               }
+               if(c != d){
+                   err += "Error sintáctico en la línea "+nl+". Corchetes mal equilibrados.\n";
+                   return;
+               }
                t = "derivada (Dx)";
               aSDx();
                break;
@@ -397,7 +417,9 @@ public class AnalizadorSintactico {
         g.crearArista("q1", "q2", "Dx");
         g.crearArista("q2", "q3", "[");
         g.crearArista("q3", "q4", "ID");
+        g.crearArista("q3", "q1", "");
         g.crearArista("q4", "q5", "]");
+        g.crearArista("q5", "q5", "]");
         g.crearArista("q5", "q6", ";");
     }
     
@@ -423,6 +445,18 @@ public class AnalizadorSintactico {
         g.insertar("q18", false, false);
         g.insertar("q19", false, true);
         g.insertar("q20", false, false);
+        g.insertar("q21", false, false);
+        g.insertar("q22", false, false);
+        g.insertar("q23", false, false);
+        
+        g.insertar("q24", false, false);
+        g.insertar("q25", false, false);
+        g.insertar("q26", false, false);
+        g.insertar("q27", false, false);
+        g.insertar("q28", false, false);
+        g.insertar("q29", false, false);
+        g.insertar("q30", false, false);
+        g.insertar("q31", false, false);
         
         g.crearArista("q1", "q2", "terminal");
         g.crearArista("q1", "q2", "");
@@ -431,8 +465,26 @@ public class AnalizadorSintactico {
         g.crearArista("q4", "q5", ";");
         g.crearArista("q4", "q6", "=");
         g.crearArista("q6", "q7", "CADENA");
-        g.crearArista("q6", "q7", "ID");
         g.crearArista("q6", "q7", "NUMERO");
+        g.crearArista("q6", "q21", "ID");
+        
+        g.crearArista("q6", "q24", "convertion");
+        g.crearArista("q24", "q25", "(");
+        g.crearArista("q25", "q26", "in");
+        g.crearArista("q26", "q27", "(");
+        g.crearArista("q27", "q28", "ID");
+        g.crearArista("q27", "q28", "CADENA");
+        g.crearArista("q28", "q29", ")");
+        g.crearArista("q29", "q30", ",");
+        g.crearArista("q30", "q31", "TIPO_DATO");
+        g.crearArista("q31", "q7", ")");
+        
+        
+        g.crearArista("q21", "q7", "");
+        g.crearArista("q21", "q22", "(");
+        g.crearArista("q22", "q23", "ID");
+        g.crearArista("q22", "q23", "NUMERO");
+        g.crearArista("q23", "q7", ")");
         g.crearArista("q7", "q8", ";");
         g.crearArista("q2", "q9", "table");
         g.crearArista("q9", "q10", "ID");
@@ -449,6 +501,18 @@ public class AnalizadorSintactico {
         g.crearArista("q16", "q17", "NUMERO");
         g.crearArista("q17", "q18", "]");
         g.crearArista("q18", "q19", ";");
+    }
+    
+    public void aSthm(){
+        g = new Grafo();
+        g.insertar("q1", true, false);
+        g.insertar("q2", false, false);
+        g.insertar("q3", false, false);
+        g.insertar("q4", false, true);
+        
+        g.crearArista("q1", "q2", "thread");
+        g.crearArista("q2", "q3", "main");
+        g.crearArista("q3", "q4", ";");    
     }
     
     public void aSif(){
