@@ -34,8 +34,6 @@ public class AnalizadorLexico {
             +"([\\x2B|\\x2D]{0,1}[\\d]+[.][\\d]+|\\d+|[\\x2B|\\x2D]{0,1}[\\x2E]{0,1}[\\d]+)|"//numero
             + "([-|/|^|+|*])|"//operador aritmetico
             + "([.|,|;])");//signos de puntuacion
-    String[] tipoDato= {"natural","integer","real","text","bit","function"};//tipos de datos
-    
     String[] tokens ={"<Palabra Reservada, %s>\n", "<Tipo de Dato, %s>\n", "<Operador Relacional, %s>\n", "<Operador de Asignación, %s>\n",
                      "<Identificador, %s>\n", "<Concatenación, %s>\n", "<Cadena Vacia, %s>\n", "<Comentario Simple, %s>\n",
                      "<Comentario Largo, %s>\n", "<Cadena de Texto, %s>\n", "<Función Especial, %s>\n", "<Operador Lógico, %s>\n",
@@ -214,15 +212,11 @@ public class AnalizadorLexico {
         re[1] += "Error léxico en la línea "+l+". "+tokens[c].substring(1,tokens[c].indexOf(","))+": "+temp+", "
         +temp.replace(r, " ")+" encontrado.\n";        //se reemplaza lo que esta bien y lo demas lo pondra en error
     }
-    private void tabla(int i, String temp, int l){       
-        if (i == 1) {// verificar si el grupo es de palabras reservadas
-            for (String palRes : tipoDato) {//Recorremos el arreglo de los tipos de datos
-                if (temp.equals(palRes)) {//Comparamos la palabra reservada para ver si es un tipo de dato
-                    simbolo.tipo= temp;//Le asignamos el tipo de dato
-                }
-            }
+    private void tabla(int i, String temp, int l){ 
+        if (i == 2) {// verificar si el grupo es de los tipos de datos
+            simbolo.tipo= temp;//Le asignamos el tipo de dato
         }
-        if (i == 4) {//Verificar si el grupo corresponde a un identificador                
+        if (i == 5) {//Verificar si el grupo corresponde a un identificador                
             if (bandera) {
                 simbolo.valor=temp;
                 simbolo.fila=l;
@@ -231,20 +225,20 @@ public class AnalizadorLexico {
                 simbolo.fila = l;//Asignamos la fila en la que fue declarado el identificador
             }
         }
-        if (i == 3) {//Verificar si el grupo corresponde al de un operador de asignación
+        if (i == 4) {//Verificar si el grupo corresponde al de un operador de asignación
             if (temp.equals("=")) {//Verificar si el operador de asignación es el igual
                 bandera = true;//Activamos la bandera que nos permitira asignar el valor
             }
         }
-        if ((i == 6 || i == 9) && bandera) {//Verificar si el grupo corresponde a una cadena vacia o a una cadena de texto, además verificar si corresponde a un valor
+        if ((i == 7 || i == 10) && bandera) {//Verificar si el grupo corresponde a una cadena vacia o a una cadena de texto, además verificar si corresponde a un valor
             simbolo.valor = temp;//Asignamos el valor 
             bandera = false;//Desactivamos la bandera
         }
-        if (i == 13 && bandera) {//Verificar si el grupo es un numero y si la bandera esta activada para considerarla como el valor del idenficador
+        if (i == 14 && bandera) {//Verificar si el grupo es un numero y si la bandera esta activada para considerarla como el valor del idenficador
             simbolo.valor = temp;//Asignamos el valor al identificador
             bandera = false;//Desactivar la bandera
         }
-        if(i == 15) {//Verificar si el grupo corresponde a un signo de puntuación
+        if(i == 16) {//Verificar si el grupo corresponde a un signo de puntuación
             if (temp.equals(";") || temp.equals(",")) {//Verificar si el signo de puntuación corresponde con el delimitador de linea
                 if (!tablaSimbolos.containsKey(nombre) && simbolo.tipo!=null && simbolo.fila!=0 && !nombre.equals("")) {//Verificamos que la tabla de simbolos no contenga el identificador y verificar que realmente se esta declarando la variable y no modificando
                     tablaSimbolos.put(nombre, new Simbolo(simbolo.tipo, simbolo.valor, simbolo.fila));//Insertamos en la tabla un nuevo simbolo
@@ -260,10 +254,10 @@ public class AnalizadorLexico {
                     }else{
                         //Error por identificador duplicado
                         //AreaErrores.setText("Error, en la linea "+simbolo.fila+" Identificador duplicado");
-                    }
+                    }                    
+                    nombre="";// Inicializar la variable para el nombre del identificador
+                    simbolo = new Simbolo();// Inicializar la variable simbolo
                 }
-                nombre="";// Inicializar la variable para el nombre del identificador
-                simbolo = new Simbolo();// Inicializar la variable simbolo
             }
         }
     }

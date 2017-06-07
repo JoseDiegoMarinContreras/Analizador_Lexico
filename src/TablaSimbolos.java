@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.swing.table.DefaultTableModel;
@@ -24,6 +25,9 @@ public class TablaSimbolos extends javax.swing.JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         tablaSimb.setEnabled(false);
         mostrarElemTabla(tablaSimbolos);
+        tablaSimb.setBackground(new Color(237,139,68));
+        this.setBackground(new Color(237,139,68));
+        tablaSimb.setSize(this.getSize());
     }
 
     /**
