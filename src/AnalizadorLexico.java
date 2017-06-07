@@ -98,7 +98,7 @@ public class AnalizadorLexico {
                         if(w.equals("\"")){
                             for(x++;x<= texto[y].length();x++){
                                 if(x == texto[y].length()){
-                                    re[1]+="Error en la linea "+(y+1)+". "+"\" perdido.\n";
+                                    re[1]+="Error en la línea "+(y+1)+". "+"\" pérdido.\n";
                                     w = "";
                                     break;
                                 }
@@ -116,7 +116,7 @@ public class AnalizadorLexico {
                     if(w.equals("\"")){
                         for(x++;x<= texto[y].length();x++){
                             if(x == texto[y].length()){
-                                re[1]+="Error en la linea "+(y+1)+". "+"\" perdido.\n";
+                                re[1]+="Error en la línea "+(y+1)+". "+"\" pérdido.\n";
                                 w = "";
                                 break;
                             }
@@ -211,7 +211,7 @@ public class AnalizadorLexico {
                 }
             }
         }
-        re[1] += "Error lexico en la linea "+l+". "+tokens[c].substring(1,tokens[c].indexOf(","))+": "+temp+", "
+        re[1] += "Error léxico en la línea "+l+". "+tokens[c].substring(1,tokens[c].indexOf(","))+": "+temp+", "
         +temp.replace(r, " ")+" encontrado.\n";        //se reemplaza lo que esta bien y lo demas lo pondra en error
     }
     private void tabla(int i, String temp, int l){       

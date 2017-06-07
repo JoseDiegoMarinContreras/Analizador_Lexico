@@ -459,7 +459,7 @@ public class Interfaz extends javax.swing.JFrame {
         AreaErrores.setText(acomodarErr(errL, errS));
         if(AreaErrores.getText().isEmpty()){
             AreaErrores.setForeground(Color.BLUE);
-            AreaErrores.setText("Compilado con Exito!!!\n");
+            AreaErrores.setText("Compilado con éxito!!!\n");
             
         }else{
             AreaErrores.setForeground(Color.RED);

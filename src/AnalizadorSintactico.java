@@ -29,7 +29,7 @@ public class AnalizadorSintactico {
        String []p = startp.split(",");
        if(p.length > 2){
            for(int i = 0; i < p.length-1; i++){
-                err += "Error sintactico en la linea "+p[i]+". START sin END.\n";
+                err += "Error sintáctico en la línea "+p[i]+". START sin END.\n";
            }
        }
        return err;
@@ -45,7 +45,7 @@ public class AnalizadorSintactico {
             }
             case "end":{
                if(startp.equals("")){
-                   err += "Error sintactico en la linea "+nl+". END sin START.\n";
+                   err += "Error sintáctico en la línea "+nl+". END sin START.\n";
                }
                startp = startp.replaceFirst(startp.substring(0, startp.indexOf(",")+1),"");
                return;
@@ -131,14 +131,14 @@ public class AnalizadorSintactico {
                 return;
             }
             default:{
-                err += "Error sintactico en la linea "+nl+". Sentencia mal hecha.\n";
+                err += "Error sintáctico en la línea "+nl+". Sentencia mal hecha.\n";
                 return;
             }
         }
         g.t = g.ini;
         for(int i = 0; i < l.length; i++){
             if(!g.mover(l[i])){
-                err += "Error sintactico en la linea "+nl+". "+l[i]+" mal puesto.\n";
+                err += "Error sintáctico en la línea "+nl+". "+l[i]+" mal puesto.\n";
                 return;
             }
             if(g.t.arista != null){
@@ -176,7 +176,7 @@ public class AnalizadorSintactico {
             }
         }
         if(!g.t.efin){
-            err += "Error sintactico en la linea "+nl+". Sentencia incompleta para "+t+".\n";
+            err += "Error sintáctico en la línea "+nl+". Sentencia incompleta para "+t+".\n";
         }
     }
     
@@ -507,7 +507,7 @@ public class AnalizadorSintactico {
                 }
                 for (int j = i+1; j < l.length; j++) {// for para recorrer el resto de la condición
                     if (l[j].equals(";")) {//condición para verificar si se ha llegado al fin de linea
-                        System.out.println("90 Fin de linea");
+                        System.out.println("90 Fin de línea");
                         return;
                     }
                     //javax.swing.JOptionPane.showMessageDialog(null, "93 "+l[j]+" linea "+(nl));
@@ -520,8 +520,7 @@ public class AnalizadorSintactico {
                                 System.out.println("r = "+r);
                                 return;
                             }
-                            j = r+1;                            
-                            //javax.swing.JOptionPane.showMessageDialog(null, "496 "+l[j]+" linea "+(nl));
+                            j = r;
                             int or=operacionR(l, nl, j);
                             if (or==0) {
                                 System.out.println("or = "+or);
@@ -537,11 +536,11 @@ public class AnalizadorSintactico {
                             }
                             j= opr;
                         }else{
-                            System.out.println("119 Error sintáctico en la linea "+(nl)+", condición mal formada en "+l[j]);
+                            err+="Error sintáctico en la línea "+(nl)+", condición mal formada en "+l[j]+"\n";
                             return;
                         }                        
                     }else{
-                        System.out.println("123 Error sintáctico en la linea "+(nl)+", condición mal formada en "+l[j]);
+                        err+="Error sintáctico en la línea "+(nl)+", condición mal formada en "+l[j]+"\n";
                         return;
                     }
                 }
@@ -575,11 +574,11 @@ public class AnalizadorSintactico {
                     opAritmetica(l,nl, j+1);
                 }
                 else{
-                    System.out.println("149 Error sintáctico en la linea "+(nl)+", operación arimética mal creada en "+l[j]);
+                    err+="Error sintáctico en la línea "+(nl)+", operación arimética mal creada en "+l[j]+"\n";
                 }
             }
         }
-        System.out.println("153 Error sintáctico en la linea "+(nl)+", operación arimética mal creada en "+l[j]);
+        err+="Error sintáctico en la línea "+(nl)+", operación arimética mal creada en "+l[j]+"\n";
         return 0;
     }
     
@@ -628,10 +627,10 @@ public class AnalizadorSintactico {
                     j++;
                     //javax.swing.JOptionPane.showMessageDialog(null, "169 "+l[j]+" linea "+(nl));
                     if (l[j].equals(")")) {
-                        System.out.println("171 Condición bien formada en la linea "+(nl));
+                        System.out.println("Condición bien formada en la linea "+(nl));
                         return j;
                     }else{
-                        System.out.println("174 Error sintáctico en la linea "+(nl)+", condición mal formada en "+l[j]);
+                        err+="Error sintáctico en la línea "+(nl)+", condición mal formada en "+l[j]+"\n";
                         return 0;
                     }
                 }else if(l[j].equals("(")){
@@ -643,7 +642,7 @@ public class AnalizadorSintactico {
                     j=nu+1;
                     //javax.swing.JOptionPane.showMessageDialog(null, "615 "+l[j]+" linea "+(nl));
                 }else{
-                    System.out.println("180 Error sintáctico en la linea "+(nl)+", condición mal formada en "+l[j]);
+                    err+="Error sintáctico en la linea "+(nl)+", condición mal formada en "+l[j]+"\n";
                     return 0;
                 }
             }

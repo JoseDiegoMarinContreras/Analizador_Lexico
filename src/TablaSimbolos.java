@@ -20,7 +20,7 @@ public class TablaSimbolos extends javax.swing.JFrame {
      */
     public TablaSimbolos(Hashtable tablaSimbolos) {
         initComponents();
-        this.setTitle("Tabla de Simbolos");
+        this.setTitle("Tabla de Símbolos");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         tablaSimb.setEnabled(false);
         mostrarElemTabla(tablaSimbolos);
